@@ -5,4 +5,3 @@ TAB: menu-complete
 set bell-style none
 set show-all-if-ambiguous on
 set menu-complete-display-prefix on
-# set completion-display-width 1
