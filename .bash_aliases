@@ -8,14 +8,10 @@ alias clean='echo -n "Really clean this directory?";
 	else
 	   echo "Not cleaned.";
 	fi'
-alias h='history'
-alias j="jobs -l"
-alias l="ls -l "
-alias ll="ls -l"
-alias ls="ls -F"
 alias pu="pushd"
 alias po="popd"
 alias comp="docker compose"
+alias ..="cd .."
 
 # Dotenv
 dotenv () 
@@ -73,3 +69,6 @@ _seq ()
     done
     echo "$lower"
 }
+
+# Options
+set -o vi
