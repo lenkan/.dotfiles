@@ -1,4 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
+PATH=$PATH:~/.local/bin
 
 # If not running interactively, don't do anything
 case $- in
@@ -48,8 +49,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-complete -C '/usr/local/bin/aws_completer' aws
-eval "$(gh completion -s bash)"
+gh --version &> /dev/null && eval "$(gh completion -s bash)"
+npm --version &> /dev/null && eval "$(npm completion)"
+node --version &> /dev/null && eval "$(node --completion-bash)"
+thefuck --version &> /dev/null && eval "$(thefuck --alias)"
+copilot --version &> /dev/null && eval "$(copilot completion bash)"
+aws --version &> /dev/null && complete -C '/usr/local/bin/aws_completer' aws
 complete -F _complete_alias "${!BASH_ALIASES[@]}"
 
 export EDITOR='vim'
