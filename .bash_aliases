@@ -1,5 +1,5 @@
 # Some useful aliases.
-alias comp="docker-compose"
+alias comp="docker compose"
 alias ..="cd .."
 
 # enable color support of ls and also add handy aliases
