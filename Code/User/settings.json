@@ -1,0 +1,100 @@
+{
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-s>": false,
+    "<C-z>": false,
+    "<C-f>": false,
+    "<C-h>": false
+  },
+  "files.insertFinalNewline": true,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "id": "bash",
+      "title": "Bash login",
+      "args": ["-l"],
+      "extensionIdentifier": ""
+    }
+  },
+  "git.mergeEditor": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "pgFormatter.commaBreak": true,
+  "pgFormatter.wrapLimit": 120,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[postgres]": {
+    "editor.defaultFormatter": "bradymholt.pgformatter"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[properties]": {
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": false
+  },
+  "[dockerfile]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.formatOnSave": false
+  },
+  "shellformat.effectLanguages": [
+    "shellscript",
+    "dotenv",
+    "hosts",
+    "jvmoptions",
+    "ignore",
+    "gitignore",
+    "properties",
+    "spring-boot-properties",
+    "azcli",
+    "bats"
+  ],
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.sql": "postgres",
+    "*.handlebars": "html"
+  },
+  "git.suggestSmartCommit": false,
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "editor.renderWhitespace": "all",
+  "editor.unicodeHighlight.allowedCharacters": {
+    "’": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.printWidth": 120,
+  "workbench.colorTheme": "Nord",
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "window.zoomLevel": 2,
+  "[handlebars]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
