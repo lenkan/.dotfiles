@@ -1,6 +1,7 @@
 # Some useful aliases.
 alias comp="docker compose"
 alias ..="cd .."
+alias updatetime="sudo ntpdate ntp.ubuntu.com"
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
