@@ -70,6 +70,16 @@ if [ -d /usr/local/go ]; then
   PATH="/usr/local/go/bin:$PATH"
 fi
 
+if [ -d "$HOME/.local/share/pnpm" ]; then
+  export PNPM_HOME="/home/lenkan/.local/share/pnpm"
+  export PATH="$PNPM_HOME:$PATH"
+
+  alias p='pnpm'
+  alias pi='pnpm install'
+
+  eval "$(pnpm completion bash)"
+fi
+
 gh --version &>/dev/null && eval "$(gh completion -s bash)"
 npm --version &>/dev/null && eval "$(npm completion)"
 node --version &>/dev/null && eval "$(node --completion-bash)"
