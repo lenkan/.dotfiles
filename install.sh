@@ -6,6 +6,7 @@ else
     echo "On WSL!"
 fi
 
+
 sudo rm -rf /var/cache/snapd/
 sudo apt autoremove --purge snapd gnome-software-plugin-snap
 rm -fr ~/snap
@@ -27,3 +28,4 @@ sudo apt-get install xclip
 sudo apt-get install jq
 sudo apt-get install httpie
 sudo apt-get install python3-dev python3-pip python3-setuptools
+
