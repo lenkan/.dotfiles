@@ -21,11 +21,23 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # Dotenv
 dotenv() {
-    export $(grep -v "^#" .env | xargs)
+    file=${1:-.env}
+    if [ ! -f $file ]; then
+        echo "File $file not found"
+        return 1
+    fi
+    
+    export $(grep -v '^#' $file | xargs)
 }
 
 unset_dotenv() {
-    unset $(grep -v '^#' .env | sed -E 's/(.*)=.*/\1/' | xargs)
+    file=${1:-.env}
+    if [ ! -f $file ]; then
+        echo "File $file not found"
+        return 1
+    fi
+
+    unset $(grep -v '^#' $file | sed -E 's/(.*)=.*/\1/' | xargs)
 }
 
 #
