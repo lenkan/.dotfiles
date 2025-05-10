@@ -80,12 +80,13 @@ if [ -d "$HOME/.local/share/pnpm" ]; then
   eval "$(pnpm completion bash)"
 fi
 
+keychain --version &>/dev/null && eval "$(keychain --eval)"
 gh --version &>/dev/null && eval "$(gh completion -s bash)"
 npm --version &>/dev/null && eval "$(npm completion)"
 node --version &>/dev/null && eval "$(node --completion-bash)"
 thefuck --version &>/dev/null && eval "$(thefuck --alias)"
 copilot --version &>/dev/null && eval "$(copilot completion bash)"
-aws --version &>/dev/null && complete -C '~/.local/bin/aws_completer' aws
+aws --version &>/dev/null && complete -C "$HOME/.local/bin/aws_completer" aws
 docker --version &>/dev/null && eval "$(docker completion bash)"
 complete -F _complete_alias "${!BASH_ALIASES[@]}"
 
