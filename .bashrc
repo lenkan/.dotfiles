@@ -29,9 +29,8 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
   debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
-fi
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+[ -f ~/.bash_prompt ] && source ~/.bash_prompt
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -85,7 +84,6 @@ gh --version &>/dev/null && eval "$(gh completion -s bash)"
 npm --version &>/dev/null && eval "$(npm completion)"
 node --version &>/dev/null && eval "$(node --completion-bash)"
 thefuck --version &>/dev/null && eval "$(thefuck --alias)"
-copilot --version &>/dev/null && eval "$(copilot completion bash)"
 aws --version &>/dev/null && complete -C "$HOME/.local/bin/aws_completer" aws
 docker --version &>/dev/null && eval "$(docker completion bash)"
 complete -F _complete_alias "${!BASH_ALIASES[@]}"
