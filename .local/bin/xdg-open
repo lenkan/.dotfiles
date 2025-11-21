@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ -z "$1" ]; then
+    echo "Usage: open <file|directory|url>"
+    exit 1
+fi
+
+if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
+    if ! command -v powershell.exe >/dev/null; then
+        echo "Error: powershell.exe not found. Cannot open files in Windows."
+        exit 1
+    fi
+
+    if [[ "$1" =~ ^https?:// ]]; then
+        powershell.exe /c "Start-Process \"$1\""
+    else
+        fullpath=$(realpath "$1")
+        winpath=$(wslpath -w "$fullpath")
+        powershell.exe /c "Start-Process \"$winpath\""
+    fi
+else
+    /usr/bin/xdg-open "$1"
+fi

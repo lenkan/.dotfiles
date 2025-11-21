@@ -1,5 +1,5 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-PATH=$PATH:~/.local/bin
+#!/bin/bash
+PATH="$HOME/.local/bin:$PATH"
 
 # If not running interactively, don't do anything
 case $- in
@@ -60,7 +60,7 @@ if [ -d ~/.nvm ]; then
 fi
 
 if [ -d ~/.deno ]; then
-  DENO_INSTALL="~/.deno"
+  DENO_INSTALL="$HOME/.deno"
   PATH="$DENO_INSTALL/bin:$PATH"
   eval "$(deno completions bash)"
 fi
@@ -77,6 +77,10 @@ if [ -d "$HOME/.local/share/pnpm" ]; then
   alias pi='pnpm install'
 
   eval "$(pnpm completion bash)"
+fi
+
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
 fi
 
 keychain --version &>/dev/null && eval "$(keychain --eval)"
