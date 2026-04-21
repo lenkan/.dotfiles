@@ -10,7 +10,10 @@ files=(
   "$root/.bashrc"
   "$root/scripts/bootstrap.sh"
   "$root/scripts/install-aws.sh"
+  "$root/scripts/install-deno.sh"
+  "$root/scripts/install-nodejs.sh"
   "$root/scripts/install-packages.sh"
+  "$root/scripts/install-uv.sh"
   "$root/scripts/sync.sh"
 )
 
