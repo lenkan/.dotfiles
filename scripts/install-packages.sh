@@ -79,6 +79,8 @@ sudo apt-get install -y \
 	httpie \
 	gh \
 	shellcheck \
+	zip \
+	unzip \
 	shfmt \
 	python3-dev \
 	python3-pip \
