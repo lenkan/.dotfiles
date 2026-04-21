@@ -76,11 +76,6 @@ if [ -f "$HOME/.cargo/env" ]; then
 	. "$HOME/.cargo/env"
 fi
 
-if command -v gnome-keyring-daemon &>/dev/null && [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
-	eval $(gnome-keyring-daemon --start --components=secrets 2>/dev/null)
-	export DBUS_SESSION_BUS_ADDRESS
-fi
-
 keychain --version &>/dev/null && eval "$(keychain --eval)"
 gh --version &>/dev/null && eval "$(gh completion -s bash)"
 npm --version &>/dev/null && eval "$(npm completion)"
