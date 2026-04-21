@@ -88,4 +88,5 @@ sudo apt-get install -y \
 	xdg-utils \
 	keychain \
 	gnome-keyring \
-	libsecret-1-0
+	libsecret-1-0 \
+	libsecret-tools
