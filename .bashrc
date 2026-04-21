@@ -48,16 +48,8 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-if [ -d ~/.nvm ]; then
-	export NVM_DIR="$HOME/.nvm"
-
-	if [ -s "$NVM_DIR/nvm.sh" ]; then
-		. "$NVM_DIR/nvm.sh"
-	fi
-
-	if [ -s "$NVM_DIR/bash_completion" ]; then
-		. "$NVM_DIR/bash_completion"
-	fi
+if command -v fnm &>/dev/null; then
+	eval "$(fnm env --use-on-cd --shell bash)"
 fi
 
 if [ -d ~/.deno ]; then

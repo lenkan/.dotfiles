@@ -82,4 +82,7 @@ sudo apt-get install -y \
 	shfmt \
 	python3-dev \
 	python3-pip \
-	python3-setuptools
+	python3-setuptools \
+	keychain
+
+curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/bin" --skip-shell
