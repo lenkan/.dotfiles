@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1090,SC1091
 PATH="$HOME/.local/bin:$PATH"
 
 # If not running interactively, don't do anything
@@ -26,7 +27,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
+	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
@@ -36,51 +37,51 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 
-  if [ -f ~/.dotfiles/complete_alias.bash ]; then
-    . ~/.dotfiles/complete_alias.bash
-  fi
+	if [ -f ~/.dotfiles/complete_alias.bash ]; then
+		. ~/.dotfiles/complete_alias.bash
+	fi
 fi
 
 if [ -d ~/.nvm ]; then
-  export NVM_DIR="$HOME/.nvm"
+	export NVM_DIR="$HOME/.nvm"
 
-  if [ -s "$NVM_DIR/nvm.sh" ]; then
-    . "$NVM_DIR/nvm.sh"
-  fi
+	if [ -s "$NVM_DIR/nvm.sh" ]; then
+		. "$NVM_DIR/nvm.sh"
+	fi
 
-  if [ -s "$NVM_DIR/bash_completion" ]; then
-    . "$NVM_DIR/bash_completion"
-  fi
+	if [ -s "$NVM_DIR/bash_completion" ]; then
+		. "$NVM_DIR/bash_completion"
+	fi
 fi
 
 if [ -d ~/.deno ]; then
-  DENO_INSTALL="$HOME/.deno"
-  PATH="$DENO_INSTALL/bin:$PATH"
-  eval "$(deno completions bash)"
+	DENO_INSTALL="$HOME/.deno"
+	PATH="$DENO_INSTALL/bin:$PATH"
+	eval "$(deno completions bash)"
 fi
 
 if [ -d /usr/local/go ]; then
-  PATH="/usr/local/go/bin:$PATH"
+	PATH="/usr/local/go/bin:$PATH"
 fi
 
 if [ -d "$HOME/.local/share/pnpm" ]; then
-  export PNPM_HOME="/home/lenkan/.local/share/pnpm"
-  export PATH="$PNPM_HOME:$PATH"
+	export PNPM_HOME="/home/lenkan/.local/share/pnpm"
+	export PATH="$PNPM_HOME:$PATH"
 
-  alias p='pnpm'
-  alias pi='pnpm install'
+	alias p='pnpm'
+	alias pi='pnpm install'
 
-  eval "$(pnpm completion bash)"
+	eval "$(pnpm completion bash)"
 fi
 
 if [ -f "$HOME/.cargo/env" ]; then
-  . "$HOME/.cargo/env"
+	. "$HOME/.cargo/env"
 fi
 
 keychain --version &>/dev/null && eval "$(keychain --eval)"

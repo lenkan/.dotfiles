@@ -5,18 +5,18 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 if grep -qi microsoft /proc/version 2>/dev/null; then
 	echo "On WSL!"
-	echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee "/etc/sudoers.d/$(whoami)" > /dev/null
+	echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee "/etc/sudoers.d/$(whoami)" >/dev/null
 	sudo passwd -d "$(whoami)"
-	sudo tee /etc/wsl.conf > /dev/null <<-EOF
-	[boot]
-	systemd=true
+	sudo tee /etc/wsl.conf >/dev/null <<-EOF
+		[boot]
+		systemd=true
 
-	[network]
-	hostname=${WSL_DISTRO_NAME}
-	generateHosts=true
+		[network]
+		hostname=${WSL_DISTRO_NAME}
+		generateHosts=true
 
-	[user]
-	default=$(whoami)
+		[user]
+		default=$(whoami)
 	EOF
 else
 	echo "Not on WSL!"

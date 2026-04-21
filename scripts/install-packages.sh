@@ -4,30 +4,29 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 add_repo() {
-    local gpg_url=$1
-    local gpg_name=$2
-    local source_file=$3
-    local source_content=$4
-    local gpgdir="/etc/apt/trusted.gpg.d"
+	local gpg_url=$1
+	local gpg_name=$2
+	local source_file=$3
+	local source_content=$4
+	local gpgdir="/etc/apt/trusted.gpg.d"
 
-    if [[ ! -f "$gpgdir/$gpg_name" ]]; then
-        mkdir -p "$DIR/tmp"
-        curl -fsSL "$gpg_url" | gpg --dearmor >"$DIR/tmp/$gpg_name"
-        sudo install -o root -g root -m 644 "$DIR/tmp/$gpg_name" "$gpgdir"
-    fi
+	if [[ ! -f "$gpgdir/$gpg_name" ]]; then
+		mkdir -p "$DIR/tmp"
+		curl -fsSL "$gpg_url" | gpg --dearmor >"$DIR/tmp/$gpg_name"
+		sudo install -o root -g root -m 644 "$DIR/tmp/$gpg_name" "$gpgdir"
+	fi
 
-    [[ -f "$source_file" ]] && return 0
+	[[ -f "$source_file" ]] && return 0
 
-    local domain
-    domain=$(printf '%s' "$source_content" | grep -oP 'https://[^/\s]+' | sed 's|https://||')
-    if [[ -n "$domain" ]] && grep -rql "$domain" /etc/apt/sources.list.d/ 2>/dev/null; then
-        echo "Source for $domain already configured, skipping."
-        return 0
-    fi
+	local domain
+	domain=$(printf '%s' "$source_content" | grep -oP 'https://[^/\s]+' | sed 's|https://||')
+	if [[ -n "$domain" ]] && grep -rql "$domain" /etc/apt/sources.list.d/ 2>/dev/null; then
+		echo "Source for $domain already configured, skipping."
+		return 0
+	fi
 
-    printf '%s\n' "$source_content" | sudo tee "$source_file" > /dev/null
+	printf '%s\n' "$source_content" | sudo tee "$source_file" >/dev/null
 }
-
 
 sudo rm -rf /var/cache/snapd/
 sudo apt-get autoremove --purge --ignore-missing snapd gnome-software-plugin-snap || true
@@ -79,6 +78,8 @@ sudo apt-get install -y \
 	jq \
 	httpie \
 	gh \
+	shellcheck \
+	shfmt \
 	python3-dev \
 	python3-pip \
 	python3-setuptools

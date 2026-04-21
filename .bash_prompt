@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 #
 # Clean and minimalistic Bash prompt
 # Author: Artem Sapegin, sapegin.me
@@ -8,13 +9,8 @@ RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 YELLOW="$(tput setaf 3)"
 BLUE="$(tput setaf 4)"
-MAGENTA="$(tput setaf 5)"
 CYAN="$(tput setaf 6)"
 WHITE="$(tput setaf 7)"
-GRAY="$(tput setaf 8)"
-BOLD="$(tput bold)"
-UNDERLINE="$(tput sgr 0 1)"
-INVERT="$(tput sgr 1 0)"
 NOCOLOR="$(tput sgr0)"
 
 # User color
@@ -24,7 +20,7 @@ case $(id -u) in
 esac
 
 # Symbols
-# prompt_symbol="❯"
+prompt_symbol="❯"
 prompt_clean_symbol=""
 prompt_dirty_symbol="* "
 prompt_venv_symbol="☁ "
@@ -38,7 +34,8 @@ function prompt_command() {
 	local git_prompt=
 	if [[ "true" = "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]]; then
 		# Branch name
-		local branch="$(git symbolic-ref HEAD 2>/dev/null)"
+		local branch
+		branch="$(git symbolic-ref HEAD 2>/dev/null)"
 		branch="${branch##refs/heads/}"
 
 		# Working tree status (red when dirty)
@@ -59,7 +56,7 @@ function prompt_command() {
 	# Virtualenv
 	local venv_prompt=
 	if [ -n "$VIRTUAL_ENV" ]; then
-		venv_prompt=" $BLUE$prompt_venv_symbol$(basename $VIRTUAL_ENV)$NOCOLOR"
+		venv_prompt=" $BLUE$prompt_venv_symbol$(basename "$VIRTUAL_ENV")$NOCOLOR"
 	fi
 
 	# aws
@@ -87,7 +84,8 @@ function prompt_command() {
 	PS2="\[$CYAN\]$prompt_symbol\[$NOCOLOR\] "
 
 	# Terminal title
-	local title="$(basename "$PWD")"
+	local title
+	title="$(basename "$PWD")"
 	[ -n "$remote" ] && title="$title \xE2\x80\x94 $HOSTNAME"
 	echo -ne "\033]0;$title"
 	echo -ne "\007"
