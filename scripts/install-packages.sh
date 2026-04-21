@@ -85,4 +85,6 @@ sudo apt-get install -y \
 	python3-setuptools \
 	keychain
 
-curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/bin" --skip-shell
+command -v fnm &>/dev/null || curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$HOME/.local/bin" --skip-shell
+command -v deno &>/dev/null || curl -fsSL https://deno.land/install.sh | sh
+command -v uv &>/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --no-modify-path
