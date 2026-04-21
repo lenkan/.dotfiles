@@ -30,7 +30,7 @@ add_repo() {
 
 
 sudo rm -rf /var/cache/snapd/
-sudo apt autoremove --purge snapd gnome-software-plugin-snap
+sudo apt-get autoremove --purge --ignore-missing snapd gnome-software-plugin-snap || true
 rm -fr ~/snap
 sudo apt-mark hold snapd
 
