@@ -11,7 +11,7 @@ git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
 ```
 
 ```bash
-~/.dotfiles/bootstrap.sh
+~/.dotfiles/scripts/bootstrap.sh
 ```
 
 ```powershell
