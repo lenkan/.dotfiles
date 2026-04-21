@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+if grep -qi microsoft /proc/version 2>/dev/null; then
+	echo "On WSL!"
+	echo "lenkan ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/lenkan > /dev/null
+	sudo tee /etc/wsl.conf > /dev/null <<-EOF
+	[boot]
+	systemd=true
+
+	[network]
+	hostname=${WSL_DISTRO_NAME}
+	generateHosts=true
+
+	[user]
+	default=$(whoami)
+	EOF
+else
+	echo "Not on WSL!"
+fi
+
+"$DIR/sync.sh"
+"$DIR/install-packages.sh"
