@@ -86,4 +86,6 @@ sudo apt-get install -y \
 	python3-pip \
 	python3-setuptools \
 	xdg-utils \
-	keychain
+	keychain \
+	gnome-keyring \
+	libsecret-1-0
