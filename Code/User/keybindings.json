@@ -27,7 +27,7 @@
     "command": "workbench.action.terminal.focus"
   },
   {
-    "key": "alt+'",
+    "key": "alt+oem_2",
     "command": "editor.action.marker.next",
     "when": "editorFocus"
   },
@@ -42,7 +42,7 @@
     "when": "editorFocus"
   },
   {
-    "key": "shift+alt+'",
+    "key": "shift+alt+oem_2",
     "command": "editor.action.marker.prev"
   },
   {
@@ -147,5 +147,15 @@
     "key": "ctrl+shift+[Comma] f",
     "command": "-testing.runCurrentFile",
     "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+p ctrl+shift+d",
+    "command": "extension.vim_ctrl+p",
+    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "-extension.vim_ctrl+p",
+    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
   }
 ]
