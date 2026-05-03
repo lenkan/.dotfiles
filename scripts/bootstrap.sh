@@ -30,4 +30,4 @@ else
 fi
 
 "$DIR/sync.sh"
-"$DIR/install-packages.sh"
+"$DIR/../.local/bin/install-packages.sh"
