@@ -1,5 +1,6 @@
 // Place your key bindings in this file to override the defaultsauto[]
 [
+  // === Command palette ===
   {
     "key": "ctrl+space space",
     "command": "workbench.action.showCommands"
@@ -8,24 +9,68 @@
     "key": "f1",
     "command": "-workbench.action.showCommands"
   },
+
+  // === Leader: focus views ===
   {
-    "key": "ctrl+k k",
+    "key": "ctrl+space ctrl+f",
     "command": "workbench.files.action.focusFilesExplorer"
   },
   {
-    "key": "ctrl+k t",
-    "command": "-notebook.cell.collapseCellOutput",
-    "when": "notebookCellHasOutputs && notebookCellListFocused && !inputFocus && !notebookCellOutputIsCollapsed"
-  },
-  {
-    "key": "ctrl+k t",
-    "command": "-notebook.cell.expandCellOutput",
-    "when": "notebookCellListFocused && notebookCellOutputIsCollapsed"
-  },
-  {
-    "key": "ctrl+k t",
+    "key": "ctrl+space ctrl+t",
     "command": "workbench.action.terminal.focus"
   },
+
+  // === Leader: window/group navigation (hjkl) ===
+  {
+    "key": "ctrl+space ctrl+h",
+    "command": "workbench.action.focusLeftGroup"
+  },
+  {
+    "key": "ctrl+space ctrl+j",
+    "command": "workbench.action.focusBelowGroup"
+  },
+  {
+    "key": "ctrl+space ctrl+k",
+    "command": "workbench.action.focusAboveGroup"
+  },
+  {
+    "key": "ctrl+space ctrl+l",
+    "command": "workbench.action.focusRightGroup"
+  },
+  {
+    "key": "ctrl+space ctrl+e",
+    "command": "workbench.action.focusActiveEditorGroup"
+  },
+
+  // === Leader: editor splits ===
+  {
+    "key": "ctrl+space shift+7",
+    "command": "workbench.action.moveEditorToRightGroup"
+  },
+  {
+    "key": "ctrl+space -",
+    "command": "workbench.action.moveEditorToBelowGroup"
+  },
+
+  // === Leader: panels & sidebars ===
+  {
+    "key": "ctrl+space ctrl+s",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "ctrl+space ctrl+a",
+    "command": "workbench.action.toggleAuxiliaryBar"
+  },
+  {
+    "key": "ctrl+space ctrl+p",
+    "command": "workbench.action.togglePanel"
+  },
+  {
+    "key": "ctrl+space ctrl+c",
+    "command": "claudeVSCodeSidebarSecondary.focus"
+  },
+
+  // === Diagnostics: next/prev marker ===
   {
     "key": "alt+oem_2",
     "command": "editor.action.marker.next",
@@ -37,14 +82,16 @@
     "when": "editorFocus"
   },
   {
+    "key": "shift+alt+oem_2",
+    "command": "editor.action.marker.prev"
+  },
+  {
     "key": "shift+alt+f8",
     "command": "-editor.action.marker.prev",
     "when": "editorFocus"
   },
-  {
-    "key": "shift+alt+oem_2",
-    "command": "editor.action.marker.prev"
-  },
+
+  // === Code actions / quick fix (alt+enter) ===
   {
     "key": "alt+enter",
     "command": "problems.action.showQuickFixes",
@@ -54,11 +101,6 @@
     "key": "ctrl+[Period]",
     "command": "-problems.action.showQuickFixes",
     "when": "problemFocus"
-  },
-  {
-    "key": "shift+alt+[IntlBackslash]",
-    "command": "-editor.action.autoFix",
-    "when": "editorTextFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)quickfix\\b/"
   },
   {
     "key": "alt+enter",
@@ -71,6 +113,13 @@
     "when": "editorHasCodeActionsProvider && editorTextFocus && !editorReadonly"
   },
   {
+    "key": "shift+alt+[IntlBackslash]",
+    "command": "-editor.action.autoFix",
+    "when": "editorTextFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)quickfix\\b/"
+  },
+
+  // === Suggestions & parameter hints ===
+  {
     "key": "ctrl+space i",
     "command": "editor.action.triggerParameterHints",
     "when": "editorHasSignatureHelpProvider && editorTextFocus"
@@ -79,14 +128,6 @@
     "key": "ctrl+shift+space",
     "command": "-editor.action.triggerParameterHints",
     "when": "editorHasSignatureHelpProvider && editorTextFocus"
-  },
-  {
-    "key": "ctrl+space q",
-    "command": "workbench.action.closeActiveEditor"
-  },
-  {
-    "key": "ctrl+w",
-    "command": "-workbench.action.closeActiveEditor"
   },
   {
     "key": "ctrl+space j",
@@ -103,6 +144,8 @@
     "command": "-editor.action.triggerSuggest",
     "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
   },
+
+  // === Format document ===
   {
     "key": "ctrl+k d",
     "command": "editor.action.formatDocument",
@@ -113,6 +156,20 @@
     "command": "-editor.action.formatDocument",
     "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
+
+  // === Vim ctrl+p remap ===
+  {
+    "key": "ctrl+shift+p ctrl+shift+d",
+    "command": "extension.vim_ctrl+p",
+    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "-extension.vim_ctrl+p",
+    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
+  },
+
+  // === Postgres: run query ===
   {
     "key": "f5",
     "command": "vscode-postgres.runQuery",
@@ -123,39 +180,15 @@
     "command": "-vscode-postgres.runQuery",
     "when": "editorLangId == 'postgres'"
   },
+
+  // === Default unbinds ===
+  {
+    "key": "ctrl+w",
+    "command": "-workbench.action.closeActiveEditor"
+  },
   {
     "key": "ctrl+o",
     "command": "-workbench.action.files.openFile",
     "when": "true"
-  },
-  {
-    "key": "ctrl+space t",
-    "command": "testing.runAtCursor",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+[Comma] c",
-    "command": "-testing.runAtCursor",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+space shift+t",
-    "command": "testing.runCurrentFile",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+[Comma] f",
-    "command": "-testing.runCurrentFile",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+p ctrl+shift+d",
-    "command": "extension.vim_ctrl+p",
-    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "-extension.vim_ctrl+p",
-    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'"
   }
 ]
