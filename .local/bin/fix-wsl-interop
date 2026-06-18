@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+	echo -1 | sudo tee /proc/sys/fs/binfmt_misc/WSLInterop >/dev/null
+fi
+echo ':WSLInterop:M::MZ::/init:P' | sudo tee /proc/sys/fs/binfmt_misc/register >/dev/null
+echo "WSLInterop re-registered."
