@@ -42,7 +42,7 @@
     "editor.autoIndent": "advanced",
   },
   "remote.autoForwardPortsSource": "hybrid",
-  "claudeCode.preferredLocation": "sidebar",
+  "claudeCode.preferredLocation": "panel",
   "chat.viewSessions.orientation": "stacked",
   "json.schemaDownload.trustedDomains": {
     "https://biomejs.dev": true,
@@ -57,4 +57,5 @@
     "https://www.schemastore.org/": true,
   },
   "workbench.colorTheme": "Dark Modern",
+  "terminal.integrated.defaultLocation": "editor",
 }

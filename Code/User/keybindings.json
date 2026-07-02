@@ -15,9 +15,15 @@
     "key": "ctrl+space ctrl+f",
     "command": "workbench.files.action.focusFilesExplorer"
   },
+
+  // === Leader: create (terminal / claude) ===
   {
-    "key": "ctrl+space ctrl+t",
-    "command": "workbench.action.terminal.focus"
+    "key": "ctrl+space t",
+    "command": "workbench.action.createTerminalEditor"
+  },
+  {
+    "key": "ctrl+space c",
+    "command": "claude-vscode.newConversation"
   },
 
   // === Leader: window/group navigation (hjkl) ===
@@ -42,14 +48,86 @@
     "command": "workbench.action.focusActiveEditorGroup"
   },
 
-  // === Leader: editor splits ===
+  // === Leader: tab navigation (tmux-style n/p, 1-9) ===
+  {
+    "key": "ctrl+space n",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "ctrl+space p",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+space 1",
+    "command": "workbench.action.openEditorAtIndex1"
+  },
+  {
+    "key": "ctrl+space 2",
+    "command": "workbench.action.openEditorAtIndex2"
+  },
+  {
+    "key": "ctrl+space 3",
+    "command": "workbench.action.openEditorAtIndex3"
+  },
+  {
+    "key": "ctrl+space 4",
+    "command": "workbench.action.openEditorAtIndex4"
+  },
+  {
+    "key": "ctrl+space 5",
+    "command": "workbench.action.openEditorAtIndex5"
+  },
+  {
+    "key": "ctrl+space 6",
+    "command": "workbench.action.openEditorAtIndex6"
+  },
+  {
+    "key": "ctrl+space 7",
+    "command": "workbench.action.openEditorAtIndex7"
+  },
+  {
+    "key": "ctrl+space 8",
+    "command": "workbench.action.openEditorAtIndex8"
+  },
+  {
+    "key": "ctrl+space 9",
+    "command": "workbench.action.openEditorAtIndex9"
+  },
+
+  // === Leader: move editor to group (hjkl) ===
+  {
+    "key": "ctrl+space shift+h",
+    "command": "workbench.action.moveEditorToLeftGroup"
+  },
+  {
+    "key": "ctrl+space shift+j",
+    "command": "workbench.action.moveEditorToBelowGroup"
+  },
+  {
+    "key": "ctrl+space shift+k",
+    "command": "workbench.action.moveEditorToAboveGroup"
+  },
+  {
+    "key": "ctrl+space shift+l",
+    "command": "workbench.action.moveEditorToRightGroup"
+  },
+
+  // === Leader: editor groups (create/close/zoom) ===
   {
     "key": "ctrl+space shift+7",
-    "command": "workbench.action.moveEditorToRightGroup"
+    "command": "workbench.action.newGroupRight"
   },
   {
     "key": "ctrl+space -",
-    "command": "workbench.action.moveEditorToBelowGroup"
+    "command": "workbench.action.newGroupBelow"
+  },
+  {
+    "key": "ctrl+space x",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "ctrl+space z",
+    "command": "workbench.action.toggleMaximizeEditorGroup"
   },
 
   // === Leader: panels & sidebars ===
@@ -64,10 +142,6 @@
   {
     "key": "ctrl+space ctrl+p",
     "command": "workbench.action.togglePanel"
-  },
-  {
-    "key": "ctrl+space ctrl+c",
-    "command": "claudeVSCodeSidebarSecondary.focus"
   },
 
   // === Diagnostics: next/prev marker ===
