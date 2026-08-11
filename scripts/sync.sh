@@ -4,8 +4,11 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." >/dev/null 2>&1 && pwd)"
 pull_wsl=0
 for arg in "$@"; do
 	case "$arg" in
-		--pull-wsl) pull_wsl=1 ;;
-		*) echo "Unknown option: $arg" >&2; exit 1 ;;
+	--pull-wsl) pull_wsl=1 ;;
+	*)
+		echo "Unknown option: $arg" >&2
+		exit 1
+		;;
 	esac
 done
 
@@ -32,12 +35,25 @@ for filename in "$DIR"/.*; do
 	fi
 done
 
-# Copy .local/bin scripts
 mkdir -p "$HOME/.local/bin"
 for filename in "$DIR"/.local/bin/*; do
 	if [ -f "$filename" ]; then
 		ln -svf "$filename" "$HOME/.local/bin/$(basename "$filename")"
 	fi
+done
+
+status=0
+
+mkdir -p "$HOME/.claude"
+for filename in "$DIR"/claude/*; do
+	[ -e "$filename" ] || continue
+	target="$HOME/.claude/$(basename "$filename")"
+	if [ -e "$target" ] && [ ! -L "$target" ]; then
+		echo "Skipping $target: exists and is not a symlink" >&2
+		status=1
+		continue
+	fi
+	ln -svfn "$filename" "$target"
 done
 
 # On WSL, deploy VS Code user config to the Windows-side path. Symlinks across
@@ -53,3 +69,5 @@ if grep -qi microsoft /proc/version 2>/dev/null; then
 		echo "Skipping VS Code sync: $win_code not found" >&2
 	fi
 fi
+
+exit "$status"

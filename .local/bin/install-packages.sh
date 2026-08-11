@@ -28,4 +28,6 @@ sudo apt-get install -y \
 	python3-pip \
 	python3-setuptools \
 	xdg-utils \
+	bubblewrap \
+	socat \
 	keychain
