@@ -24,31 +24,22 @@
     "deny": [
       "Read(~/.ssh/**)",
       "Edit(~/.ssh/**)",
-      "Write(~/.ssh/**)",
       "Read(~/.aws/**)",
       "Edit(~/.aws/**)",
-      "Write(~/.aws/**)",
       "Read(~/.config/gh/hosts.yml)",
       "Edit(~/.config/gh/hosts.yml)",
-      "Write(~/.config/gh/hosts.yml)",
       "Read(~/.claude/.credentials.json)",
       "Edit(~/.claude/.credentials.json)",
-      "Write(~/.claude/.credentials.json)",
       "Read(**/.env)",
       "Edit(**/.env)",
-      "Write(**/.env)",
       "Read(**/.env.*)",
       "Edit(**/.env.*)",
-      "Write(**/.env.*)",
       "Read(**/.credentials*)",
       "Edit(**/.credentials*)",
-      "Write(**/.credentials*)",
       "Read(**/id_rsa*)",
       "Edit(**/id_rsa*)",
-      "Write(**/id_rsa*)",
       "Read(**/id_ed25519*)",
-      "Edit(**/id_ed25519*)",
-      "Write(**/id_ed25519*)"
+      "Edit(**/id_ed25519*)"
     ],
     "ask": [
       "Bash(git push *)",
@@ -61,9 +52,7 @@
       "Bash(gh pr ready *)",
       "Bash(gh pr reopen *)",
       "Edit(**/.claude/settings.json)",
-      "Write(**/.claude/settings.json)",
-      "Edit(**/claude/settings.json)",
-      "Write(**/claude/settings.json)"
+      "Edit(**/claude/settings.json)"
     ],
     "defaultMode": "auto",
     "disableBypassPermissionsMode": "disable"
