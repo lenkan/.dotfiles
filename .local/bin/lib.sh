@@ -50,3 +50,29 @@ pkg_install() {
 		;;
 	esac
 }
+
+# apt_add_repo NAME KEY_URL REPO installs a dearmored signing key and a
+# sources.list.d entry for an apt repo, skipping either step already in place.
+# REPO is the deb line after the [options]: "<url> <suite> <components...>".
+apt_add_repo() {
+	local name="$1" key_url="$2" repo="$3"
+	local keyring="/etc/apt/trusted.gpg.d/$name.gpg"
+	local arch
+	arch=$(dpkg --print-architecture)
+
+	if [[ ! -f "$keyring" ]]; then
+		curl -fsSL "$key_url" | gpg --dearmor | sudo tee "$keyring" >/dev/null
+	fi
+	if [[ ! -f "/etc/apt/sources.list.d/$name.list" ]]; then
+		echo "deb [arch=$arch signed-by=$keyring] $repo" | sudo tee "/etc/apt/sources.list.d/$name.list" >/dev/null
+	fi
+}
+
+# yum_add_repo_url NAME URL downloads a vendor-provided .repo file into
+# /etc/yum.repos.d, once.
+yum_add_repo_url() {
+	local name="$1" url="$2"
+	if [[ ! -f "/etc/yum.repos.d/$name.repo" ]]; then
+		curl -fsSL "$url" | sudo tee "/etc/yum.repos.d/$name.repo" >/dev/null
+	fi
+}

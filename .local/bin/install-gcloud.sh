@@ -7,15 +7,8 @@ DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 
 case "$DISTRO_FAMILY" in
 debian)
-	arch=$(dpkg --print-architecture)
-	gpgdir="/etc/apt/trusted.gpg.d"
-
-	if [[ ! -f "$gpgdir/cloud.google.gpg" ]]; then
-		curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor | sudo tee "$gpgdir/cloud.google.gpg" >/dev/null
-	fi
-	if [[ ! -f /etc/apt/sources.list.d/google-cloud-sdk.list ]]; then
-		echo "deb [arch=$arch signed-by=$gpgdir/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list >/dev/null
-	fi
+	apt_add_repo google-cloud-sdk https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+		"https://packages.cloud.google.com/apt cloud-sdk main"
 	;;
 fedora)
 	if [[ ! -f /etc/yum.repos.d/google-cloud-sdk.repo ]]; then
@@ -29,10 +22,6 @@ fedora)
 			gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 		EOF
 	fi
-	;;
-*)
-	echo "Unsupported distro family: $DISTRO_FAMILY" >&2
-	exit 1
 	;;
 esac
 

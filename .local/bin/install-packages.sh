@@ -25,10 +25,10 @@ common=(
 	keychain
 )
 
+pkg_update
+
 case "$DISTRO_FAMILY" in
 debian)
-	pkg_update
-
 	# Ubuntu ships snap; rip it out so packages come from apt only.
 	sudo rm -rf /var/cache/snapd/
 	sudo apt-get autoremove --purge --ignore-missing snapd gnome-software-plugin-snap || true
@@ -45,17 +45,11 @@ debian)
 		python3-dev
 	;;
 fedora)
-	pkg_update
-
 	pkg_install \
 		"${common[@]}" \
 		vim-enhanced \
 		gnupg2 \
 		ShellCheck \
 		python3-devel
-	;;
-*)
-	echo "Unsupported distro family: $DISTRO_FAMILY" >&2
-	exit 1
 	;;
 esac

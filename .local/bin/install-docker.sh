@@ -10,30 +10,15 @@ if is_wsl; then
 	exit 0
 fi
 
-packages=(docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin)
-
 case "$DISTRO_FAMILY" in
 debian)
-	arch=$(dpkg --print-architecture)
-	gpgdir="/etc/apt/trusted.gpg.d"
-
-	if [[ ! -f "$gpgdir/docker.gpg" ]]; then
-		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor | sudo tee "$gpgdir/docker.gpg" >/dev/null
-	fi
-	if [[ ! -f /etc/apt/sources.list.d/docker.list ]]; then
-		echo "deb [arch=$arch signed-by=$gpgdir/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-	fi
+	apt_add_repo docker https://download.docker.com/linux/ubuntu/gpg \
+		"https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 	;;
 fedora)
-	if [[ ! -f /etc/yum.repos.d/docker-ce.repo ]]; then
-		curl -fsSL https://download.docker.com/linux/fedora/docker-ce.repo | sudo tee /etc/yum.repos.d/docker-ce.repo >/dev/null
-	fi
-	;;
-*)
-	echo "Unsupported distro family: $DISTRO_FAMILY" >&2
-	exit 1
+	yum_add_repo_url docker-ce https://download.docker.com/linux/fedora/docker-ce.repo
 	;;
 esac
 
 pkg_update
-pkg_install "${packages[@]}"
+pkg_install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
