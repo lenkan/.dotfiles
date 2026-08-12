@@ -1,15 +1,28 @@
 #!/bin/bash
 set -euo pipefail
 
-arch=$(dpkg --print-architecture)
-gpgdir="/etc/apt/trusted.gpg.d"
+DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# shellcheck source=lib.sh
+. "$DIR/lib.sh"
 
-if [[ ! -f "$gpgdir/packages.microsoft.gpg" ]]; then
-	curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee "$gpgdir/packages.microsoft.gpg" >/dev/null
-fi
-if [[ ! -f /etc/apt/sources.list.d/azure-cli.list ]]; then
-	echo "deb [arch=$arch signed-by=$gpgdir/packages.microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list >/dev/null
-fi
+case "$DISTRO_FAMILY" in
+debian)
+	apt_add_repo azure-cli https://packages.microsoft.com/keys/microsoft.asc \
+		"https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main"
+	;;
+fedora)
+	if [[ ! -f /etc/yum.repos.d/azure-cli.repo ]]; then
+		sudo tee /etc/yum.repos.d/azure-cli.repo >/dev/null <<-'EOF'
+			[azure-cli]
+			name=Azure CLI
+			baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+			enabled=1
+			gpgcheck=1
+			gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+		EOF
+	fi
+	;;
+esac
 
-sudo apt-get update
-sudo apt-get install -y azure-cli
+pkg_update
+pkg_install azure-cli

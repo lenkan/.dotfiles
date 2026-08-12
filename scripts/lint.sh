@@ -13,7 +13,7 @@ files=(
 )
 
 echo "==> shellcheck"
-shellcheck "${files[@]}"
+shellcheck -x -P SCRIPTDIR "${files[@]}"
 
 echo "==> shfmt"
 shfmt --diff "${files[@]}"

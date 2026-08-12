@@ -1,15 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
-arch=$(dpkg --print-architecture)
-gpgdir="/etc/apt/trusted.gpg.d"
+DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# shellcheck source=lib.sh
+. "$DIR/lib.sh"
 
-if [[ ! -f "$gpgdir/githubcli.gpg" ]]; then
-	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor | sudo tee "$gpgdir/githubcli.gpg" >/dev/null
-fi
-if [[ ! -f /etc/apt/sources.list.d/github-cli.list ]]; then
-	echo "deb [arch=$arch signed-by=$gpgdir/githubcli.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
-fi
+case "$DISTRO_FAMILY" in
+debian)
+	apt_add_repo githubcli https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+		"https://cli.github.com/packages stable main"
+	;;
+fedora)
+	yum_add_repo_url gh-cli https://cli.github.com/packages/rpm/gh-cli.repo
+	;;
+esac
 
-sudo apt-get update
-sudo apt-get install -y gh
+pkg_update
+pkg_install gh
