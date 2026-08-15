@@ -62,13 +62,16 @@ if [ -d /usr/local/go ]; then
 	PATH="/usr/local/go/bin:$PATH"
 fi
 
-if [ -d "$HOME/.local/share/pnpm" ]; then
-	export PNPM_HOME="/home/lenkan/.local/share/pnpm"
-	export PATH="$PNPM_HOME:$PATH"
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME/bin:"*) ;;
+*) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
 
+if command -v pnpm >/dev/null 2>&1; then
 	alias p='pnpm'
 	alias pi='pnpm install'
-
 	eval "$(pnpm completion bash)"
 fi
 
