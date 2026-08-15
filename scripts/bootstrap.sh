@@ -2,8 +2,14 @@
 set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+# shellcheck source=SCRIPTDIR/lib/distro.sh
+. "$DIR/lib/distro.sh"
 
-if grep -qi microsoft /proc/version 2>/dev/null; then
+if [ "$DOTFILES_FAMILY" = unknown ]; then
+	unsupported_distro
+fi
+
+if is_wsl; then
 	echo "On WSL!"
 	echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee "/etc/sudoers.d/$(whoami)" >/dev/null
 	sudo passwd -d "$(whoami)"

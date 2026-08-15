@@ -1,3 +1,8 @@
+---
+name: address-review
+description: Address PR review comments — triage findings, implement accepted ones, verify, commit
+---
+
 # Address PR Review
 
 For the current PR:

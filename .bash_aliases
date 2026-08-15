@@ -2,7 +2,8 @@
 # Some useful aliases.
 alias comp="docker compose"
 alias ..="cd .."
-alias updatetime="sudo ntpdate ntp.ubuntu.com"
+# WSL clock drifts after the host sleeps; resync from the hardware clock.
+alias updatetime="sudo hwclock -s"
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then

@@ -1,15 +1,23 @@
 #!/bin/bash
 set -euo pipefail
 
-arch=$(dpkg --print-architecture)
-gpgdir="/etc/apt/trusted.gpg.d"
+DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+# shellcheck source=SCRIPTDIR/../../scripts/lib/distro.sh
+. "$DIR/../../scripts/lib/distro.sh"
 
-if [[ ! -f "$gpgdir/packages.microsoft.gpg" ]]; then
-	curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee "$gpgdir/packages.microsoft.gpg" >/dev/null
-fi
-if [[ ! -f /etc/apt/sources.list.d/vscode.list ]]; then
-	echo "deb [arch=$arch signed-by=$gpgdir/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list >/dev/null
-fi
-
-sudo apt-get update
-sudo apt-get install -y code
+case "$DOTFILES_FAMILY" in
+fedora)
+	add_rpm_repo vscode "Visual Studio Code" \
+		https://packages.microsoft.com/keys/microsoft.asc \
+		https://packages.microsoft.com/yumrepos/vscode
+	sudo dnf install -y code
+	;;
+debian)
+	add_apt_repo vscode microsoft \
+		https://packages.microsoft.com/keys/microsoft.asc \
+		https://packages.microsoft.com/repos/code stable main
+	sudo apt-get update
+	sudo apt-get install -y code
+	;;
+*) unsupported_distro ;;
+esac

@@ -9,11 +9,12 @@ files=(
 	"$root"/.bash_prompt
 	"$root"/.bashrc
 	"$root"/scripts/*.sh
+	"$root"/scripts/lib/*.sh
 	"$root"/.local/bin/*
 )
 
 echo "==> shellcheck"
-shellcheck "${files[@]}"
+shellcheck -x "${files[@]}"
 
 echo "==> shfmt"
 shfmt --diff "${files[@]}"
