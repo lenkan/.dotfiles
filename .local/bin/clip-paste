@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-paste >/dev/null 2>&1; then
+	exec wl-paste --no-newline
+elif [ -n "${DISPLAY:-}" ] && command -v xclip >/dev/null 2>&1; then
+	exec xclip -out -selection clipboard
+elif command -v powershell.exe >/dev/null 2>&1; then
+	# clip.exe only writes; reading needs PowerShell, which adds CR.
+	powershell.exe -NoProfile -Command Get-Clipboard | tr -d '\r'
+fi

@@ -32,6 +32,7 @@ sudo dnf install -y \
 	unzip \
 	vim-enhanced \
 	which \
+	wl-clipboard \
 	xclip \
 	xdg-utils \
 	zip

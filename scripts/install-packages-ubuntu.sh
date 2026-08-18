@@ -28,6 +28,7 @@ sudo apt-get install -y \
 	httpie \
 	jq \
 	keychain \
+	ncurses-term \
 	python3-dev \
 	python3-pip \
 	python3-setuptools \
@@ -37,6 +38,7 @@ sudo apt-get install -y \
 	tmux \
 	unzip \
 	vim \
+	wl-clipboard \
 	xclip \
 	xdg-utils \
 	zip
