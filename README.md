@@ -30,5 +30,5 @@ install-aws.sh      install-gcloud.sh  install-docker.sh install-code.sh
 
 ## Other
 
-- `scripts/sync.sh` — re-link dotfiles; `--pull-wsl` pulls VS Code settings from Windows
+- `scripts/sync.sh` — re-link dotfiles
 - `scripts/lint.sh` — shellcheck + shfmt
