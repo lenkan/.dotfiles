@@ -11,6 +11,7 @@ YELLOW="$(tput setaf 3)"
 BLUE="$(tput setaf 4)"
 CYAN="$(tput setaf 6)"
 WHITE="$(tput setaf 7)"
+BOLD="$(tput bold)"
 NOCOLOR="$(tput sgr0)"
 
 # User color
@@ -24,6 +25,12 @@ prompt_symbol="❯"
 prompt_clean_symbol=""
 prompt_dirty_symbol="* "
 prompt_venv_symbol="☁ "
+
+# distrobox sets CONTAINER_ID on entry; unset on the host.
+container_prompt=
+if [ -n "${CONTAINER_ID:-}" ]; then
+	container_prompt="\[$BOLD$YELLOW\][$CONTAINER_ID]\[$NOCOLOR\] "
+fi
 
 function prompt_command() {
 	# Local or SSH session?
@@ -74,7 +81,7 @@ function prompt_command() {
 	[ -n "$user_prompt" ] || [ -n "$host_prompt" ] && login_delimiter=":"
 
 	# Format prompt
-	first_line="$user_prompt$host_prompt$login_delimiter$WHITE\w$NOCOLOR$git_prompt$venv_prompt$aws_prompt"
+	first_line="$container_prompt$user_prompt$host_prompt$login_delimiter$WHITE\w$NOCOLOR$git_prompt$venv_prompt$aws_prompt"
 	# Text (commands) inside \[...\] does not impact line length calculation which fixes stange bug when looking through the history
 	# $? is a status of last command, should be processed every time prompt prints
 	second_line="\`if [ \$? = 0 ]; then echo \[\$CYAN\]; else echo \[\$RED\]; fi\`\\$\[\$NOCOLOR\] "
