@@ -1,64 +1,42 @@
 #!/bin/bash
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." >/dev/null 2>&1 && pwd)"
+# shellcheck source=SCRIPTDIR/lib/distro.sh
+. "$DIR/scripts/lib/distro.sh"
 
-pull_wsl=0
-for arg in "$@"; do
-	case "$arg" in
-	--pull-wsl) pull_wsl=1 ;;
-	*)
-		echo "Unknown option: $arg" >&2
-		exit 1
-		;;
-	esac
-done
-
-if [ "$pull_wsl" -eq 1 ]; then
-	if ! grep -qi microsoft /proc/version 2>/dev/null; then
-		echo "--pull-wsl only works on WSL" >&2
-		exit 1
-	fi
-	win_user=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
-	win_code="/mnt/c/Users/$win_user/AppData/Roaming/Code/User"
-	if [ ! -d "$win_code" ]; then
-		echo "Windows VS Code dir not found: $win_code" >&2
-		exit 1
-	fi
-	for filename in "$DIR"/Code/User/*.json; do
-		cp -v "$win_code/$(basename "$filename")" "$filename"
-	done
-	exit 0
+if [ $# -gt 0 ]; then
+	echo "Usage: sync.sh" >&2
+	exit 1
 fi
 
+# link_into <destdir> <src>...
+link_into() {
+	local destdir="$1" target src
+	shift
+	mkdir -p "$destdir"
+	for src in "$@"; do
+		[ -e "$src" ] || continue
+		target="$destdir/$(basename "$src")"
+		if [ -e "$target" ] && [ ! -L "$target" ]; then
+			echo "Skipping $target: exists and is not a symlink, remove it to link" >&2
+			continue
+		fi
+		ln -svfn "$src" "$target"
+	done
+}
+
+# [ -f ] is load-bearing: `.*` also matches .git and .local.
 for filename in "$DIR"/.*; do
 	if [ -f "$filename" ]; then
 		ln -svf "$filename" "$HOME/$(basename "$filename")"
 	fi
 done
 
-mkdir -p "$HOME/.local/bin"
-for filename in "$DIR"/.local/bin/*; do
-	if [ -f "$filename" ]; then
-		ln -svf "$filename" "$HOME/.local/bin/$(basename "$filename")"
-	fi
-done
+link_into "$HOME/.local/bin" "$DIR"/.local/bin/*
 
-status=0
+link_into "$HOME/.claude" "$DIR"/claude/*
 
-mkdir -p "$HOME/.claude"
-for filename in "$DIR"/claude/*; do
-	[ -e "$filename" ] || continue
-	target="$HOME/.claude/$(basename "$filename")"
-	if [ -e "$target" ] && [ ! -L "$target" ]; then
-		echo "Skipping $target: exists and is not a symlink" >&2
-		status=1
-		continue
-	fi
-	ln -svfn "$filename" "$target"
-done
-
-# On WSL, deploy VS Code user config to the Windows-side path. Symlinks across
-# /mnt/c don't work for VS Code, so copy.
-if grep -qi microsoft /proc/version 2>/dev/null; then
+# VS Code on WSL runs on the Windows side and won't follow symlinks across /mnt/c.
+if is_wsl; then
 	win_user=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
 	win_code="/mnt/c/Users/$win_user/AppData/Roaming/Code/User"
 	if [ -d "$win_code" ]; then
@@ -68,6 +46,6 @@ if grep -qi microsoft /proc/version 2>/dev/null; then
 	else
 		echo "Skipping VS Code sync: $win_code not found" >&2
 	fi
+else
+	link_into "${XDG_CONFIG_HOME:-$HOME/.config}/Code/User" "$DIR"/Code/User/*.json
 fi
-
-exit "$status"
