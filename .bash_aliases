@@ -24,6 +24,7 @@ alias gb='git branch'
 alias gc='git checkout'
 alias n='npm run'
 alias nn='npm run'
+alias pp='pnpm run'
 alias open='xdg-open'
 
 # Dotenv
