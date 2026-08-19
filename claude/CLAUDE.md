@@ -1,4 +1,19 @@
 ## Worktree discipline
+### Worktree-or-main checkpoint
+- Right after a plan is approved (post-`ExitPlanMode`) and before the first edit, ask via `AskUserQuestion` whether to implement on main or in a worktree — never decide this silently.
+- Compute a recommended default from the plan's content and mark it "(Recommended)":
+  - Needs live verification (dev server, manual browser/CLI testing, iterating against running state) → recommend **main, auto**.
+  - Self-contained, verifiable by tests/build/lint alone, especially one of several independent tasks headed for its own PR → recommend **worktree, auto**.
+- Offer these four options:
+  1. Main, auto-accept edits
+  2. Main, manually approve edits
+  3. Worktree, auto-accept edits — implement, verify, push, open PR without further confirmation for this task
+  4. Worktree, manually approve edits — implement in a worktree, but confirm before push/PR
+- Choosing "auto" + "worktree" overrides the general confirm-before-push default for that task.
+- For several independent small tasks handed over together, ask the checkpoint once (it applies to all of them), then fan out with parallel `Agent` calls using `isolation: "worktree"` — one worktree/branch/PR per task.
+- Skip the checkpoint for trivial single-file/one-line fixes, even if they went through plan mode.
+
+### Once inside a worktree
 - Before edits in a worktree, run `pwd` and `git branch --show-current` as one parallel batch to confirm location and branch.
 - Verify a worktree is based on the intended base (usually `main`), not a stale feature branch.
 - Re-read files from the current worktree before editing — never trust content from a previous worktree.
