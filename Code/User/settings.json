@@ -49,6 +49,17 @@
   },
   "workbench.colorTheme": "Dark Modern",
   "terminal.integrated.defaultLocation": "editor",
+  "terminal.integrated.commandsToSkipShell": [
+    "workbench.action.openEditorAtIndex1",
+    "workbench.action.openEditorAtIndex2",
+    "workbench.action.openEditorAtIndex3",
+    "workbench.action.openEditorAtIndex4",
+    "workbench.action.openEditorAtIndex5",
+    "workbench.action.openEditorAtIndex6",
+    "workbench.action.openEditorAtIndex7",
+    "workbench.action.openEditorAtIndex8",
+    "workbench.action.openEditorAtIndex9",
+  ],
   "python.terminal.activateEnvironment": false,
   "workbench.browser.searchEngine": "google",
 }
