@@ -11,18 +11,14 @@
   "files.insertFinalNewline": true,
   "git.mergeEditor": false,
   "editor.formatOnSave": true,
-  "[properties]": {
-    "editor.bracketPairColorization.independentColorPoolPerBracketType": false,
-  },
-  "[dockerfile]": {
-    "editor.quickSuggestions": {
-      "strings": true,
+  "[javascript][javascriptreact][typescript][typescriptreact][json][css][graphql]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.biome": "explicit",
     },
-    "editor.formatOnSave": false,
   },
-  "git.suggestSmartCommit": false,
-  "[python]": {
-    "editor.formatOnType": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
   },
   "editor.renderWhitespace": "all",
   "editor.unicodeHighlight.allowedCharacters": {
@@ -36,11 +32,6 @@
   },
   "window.zoomLevel": 2,
   "github.copilot.nextEditSuggestions.enabled": true,
-  "[dockercompose]": {
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-    "editor.autoIndent": "advanced",
-  },
   "remote.autoForwardPortsSource": "hybrid",
   "claudeCode.preferredLocation": "panel",
   "chat.viewSessions.orientation": "stacked",
@@ -58,4 +49,6 @@
   },
   "workbench.colorTheme": "Dark Modern",
   "terminal.integrated.defaultLocation": "editor",
+  "python.terminal.activateEnvironment": false,
+  "workbench.browser.searchEngine": "google",
 }
