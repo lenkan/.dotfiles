@@ -28,26 +28,15 @@
 - Edit files with the Edit/Write tools, never by shelling out to `python3`/`sed`/`awk` heredocs that rewrite them. Batching a procedure into one shell call saves a round-trip but costs an approval prompt.
 - To revert a temporary edit, use `git checkout -- <file>`. Don't `cp` backups to /tmp; git is already the backup.
 
-## Code comments
-- Default to NO comment. Most functions, fields, types, and tables need none — the name and type already carry the intent.
-- Add a comment only for a genuine quirk or non-obvious decision: a footgun, a service-enforced invariant no type expresses, an ordering dependency, a surprising FK/null asymmetry. One line beats three.
-- Never restate the adjacent name/type, never editorialize design intent the PR/issue already records, never write multi-line preambles on routine code.
-
 ## TypeScript
 - Node 22.6+ runs `.ts` natively (default in 23.6+, used on Node 24). Run scripts as `node ./script.ts`; don't suggest `tsx`, `ts-node`, or `swc-node`.
 
 ## Writing
-- Default issue template: **Context** (2–3 sentences), **Proposal** (bullets), **Out of scope** (bullets).
-- No speculative future scope in PR descriptions, issues, or design notes ("tomorrow possibly X may also use this"). Scope trade-offs to what runs today; verify infra/domain claims before including them.
-- Plain language for PR comments and chat: lead with the point in one short sentence, split dense clauses. Avoid academic vocabulary (tautological, orthogonal, idempotent unless about retry semantics, axiomatic, vacuous).
-
-## Documentation
-- READMEs and docs cover what the thing does, how to set it up, and how to use it. Nothing else.
-- Cut history, background stories, design philosophy, and rationale for decisions already made. If a reader needs the "why", it belongs in the PR or an ADR, not the README.
-- No preamble sections ("Overview", "Motivation", "Background") unless the doc is unusable without them.
-
-## PR test plans
-- The `## Test plan` section is a log of what was verified before opening the PR, not a checklist for the reviewer. List checks actually run (tests, scripts, Playwright MCP, manual steps); put anything that couldn't be verified under an **Unverified** subsection with the reason. Omit the section if both are empty — don't speculate.
+- Length is set by what the reader needs in order to act, not by the work behind it. Default short; a wide diff, or a decision the reader actually has to weigh, earns more room.
+- Cut the investigation path, rejected alternatives, and follow-up backlog unless the reader's decision turns on them. In code, comment the footgun, never the name or the type.
+- No standard PR/issue template — write the sections that carry something. A test plan lists checks actually run, not the transcript, and says plainly what went unverified.
+- Verify infra/domain claims before including them. Plain language: lead with the point, split dense clauses.
+- READMEs: what it does, setup, usage. The "why" belongs in the PR or an ADR.
 
 ## PR review responses
 - Triage every comment first: IMPLEMENT / DEFER (file in issue tracker) / PUSH BACK, with feasibility check and rationale.
