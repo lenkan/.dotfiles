@@ -28,7 +28,7 @@
     "plaintext": false,
     "markdown": false,
     "scminput": false,
-    "typescript": true,
+    "typescript": true
   },
   "window.zoomLevel": 2,
   "github.copilot.nextEditSuggestions.enabled": true,
@@ -60,6 +60,8 @@
     "workbench.action.openEditorAtIndex8",
     "workbench.action.openEditorAtIndex9",
   ],
+  // WebGL terminal triggers amdgpu SQC page faults / ring resets on Radeon 890M: https://github.com/microsoft/vscode/issues/238088
+  "terminal.integrated.gpuAcceleration": "off",
   "python.terminal.activateEnvironment": false,
   "workbench.browser.searchEngine": "google",
 }
