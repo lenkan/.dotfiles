@@ -60,6 +60,11 @@
     "defaultMode": "auto",
     "disableBypassPermissionsMode": "disable"
   },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true
 }
