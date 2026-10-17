@@ -1,0 +1,7 @@
+# Not a Nerd Font: Ghostty draws the Nerd Font icons itself
+font-family = Source Code Pro
+font-style = Medium
+font-size = 10
+
+# Installs Ghostty's terminfo on hosts you SSH into, falling back to xterm-256color
+shell-integration-features = ssh-terminfo,ssh-env

@@ -25,7 +25,7 @@ if "$HOME/.local/bin/ghostty" +version 2>/dev/null | grep -qF "$ghostty_version"
 fi
 
 # Not dnf's zig: it is usually the wrong version
-sudo dnf install -y gtk4-devel gtk4-layer-shell-devel libadwaita-devel gettext minisign
+sudo dnf install -y gtk4-devel gtk4-layer-shell-devel libadwaita-devel gettext minisign adobe-source-code-pro-fonts
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT

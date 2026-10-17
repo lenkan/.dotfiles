@@ -35,7 +35,8 @@ link_into "$HOME/.local/bin" "$DIR"/.local/bin/*
 
 link_into "$HOME/.claude" "$DIR"/claude/*
 
-link_into "${XDG_CONFIG_HOME:-$HOME/.config}" "$DIR"/nvim
+# Ghostty reads ~/.config/ghostty on macOS too
+link_into "${XDG_CONFIG_HOME:-$HOME/.config}" "$DIR"/nvim "$DIR"/ghostty
 
 # VS Code on WSL runs on the Windows side and won't follow symlinks across /mnt/c.
 if is_wsl; then
