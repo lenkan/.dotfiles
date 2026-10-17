@@ -2,8 +2,8 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=SCRIPTDIR/lib/distro.sh
-. "$DIR/lib/distro.sh"
+# shellcheck source=SCRIPTDIR/distro.sh
+. "$DIR/distro.sh"
 
 sudo apt-get update
 

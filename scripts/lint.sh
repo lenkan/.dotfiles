@@ -9,8 +9,10 @@ files=(
 	"$root"/.bash_prompt
 	"$root"/.bashrc
 	"$root"/scripts/*.sh
-	"$root"/scripts/lib/*.sh
-	"$root"/.local/bin/*
+	"$root"/*/bootstrap.sh
+	"$root"/bin/*
+	"$root"/*/bin/*
+	"$root"/*/lib/*.sh
 )
 
 echo "==> shellcheck"

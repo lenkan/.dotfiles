@@ -1,6 +1,8 @@
 # Dotfiles
 
-## New distro
+Shared configs live at the root. `linux/`, `wsl/` and `macos/` hold what only applies there.
+
+## WSL
 
 ```powershell
 wsl --install Ubuntu-24.04 --name <distroname>
@@ -14,11 +16,38 @@ sudo dnf install -y git                             # Fedora
 sudo apt-get update && sudo apt-get install -y git  # Ubuntu
 
 git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
-~/.dotfiles/scripts/bootstrap.sh
+~/.dotfiles/wsl/bootstrap.sh
 ```
 
 ```powershell
 wsl --terminate <distroname>
+```
+
+## Linux
+
+```bash
+git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
+~/.dotfiles/linux/bootstrap.sh
+```
+
+Optional installers from `linux/bin/` are on `PATH`, e.g. `install-ghostty.sh`.
+
+## macOS
+
+```bash
+git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
+~/.dotfiles/macos/bootstrap.sh
+```
+
+## Machine-specific git config
+
+`~/.gitconfig.local` is included last and overrides `.gitconfig`, e.g. a work identity:
+
+```ini
+[user]
+	name = ...
+	email = ...
+	signingkey = ...
 ```
 
 ## Neovim

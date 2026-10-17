@@ -2,8 +2,8 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
-# shellcheck source=SCRIPTDIR/../../scripts/lib/distro.sh
-. "$DIR/../../scripts/lib/distro.sh"
+# shellcheck source=SCRIPTDIR/../lib/distro.sh
+. "$DIR/../lib/distro.sh"
 
 case "$DOTFILES_FAMILY" in
 fedora)

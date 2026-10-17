@@ -20,8 +20,11 @@
 [commit]
 	gpgSign = true
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper =
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper =
+	helper = !gh auth git-credential
+# Machine-specific overrides, e.g. a work [user]. Must stay last to win.
+[include]
+	path = ~/.gitconfig.local
