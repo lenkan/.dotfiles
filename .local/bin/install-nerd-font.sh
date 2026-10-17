@@ -6,8 +6,8 @@ DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 . "$DIR/../../scripts/lib/distro.sh"
 
 # Source Code Pro with icons for nvim. Nerd Fonts renames it to SauceCodePro.
-# The Mono variant keeps icons one cell wide, which terminals need.
-family='SauceCodePro Nerd Font Mono'
+# Not the Mono variant: that one shrinks icons to fit one cell, which makes them hard to see.
+family='SauceCodePro Nerd Font'
 
 if is_wsl; then
 	echo "On WSL the terminal runs on Windows: install $family there and pick it in Windows Terminal." >&2
