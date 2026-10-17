@@ -1,7 +1,6 @@
 -- See `:help vim.o` and `:help option-list`
 
 vim.o.number = true
-vim.o.mouse = 'a'
 
 -- The mode is already shown in the statusline
 vim.o.showmode = false

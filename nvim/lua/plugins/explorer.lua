@@ -14,3 +14,15 @@ require('nvim-tree').setup {
   -- Like VS Code: show dotfiles, hide .git; gitignored files stay hidden
   filters = { custom = { '^.git$' } },
 }
+
+-- Renaming or moving a file in the tree asks the language servers (ts_ls) to update imports first
+local api = require 'nvim-tree.api'
+api.events.subscribe(api.events.Event.WillRenameNode, function(data)
+  local params = { files = { { oldUri = vim.uri_from_fname(data.old_name), newUri = vim.uri_from_fname(data.new_name) } } }
+  for _, client in ipairs(vim.lsp.get_clients()) do
+    if client:supports_method 'workspace/willRenameFiles' then
+      local response = client:request_sync('workspace/willRenameFiles', params, 2000)
+      if response and response.result then vim.lsp.util.apply_workspace_edit(response.result, client.offset_encoding) end
+    end
+  end
+end)

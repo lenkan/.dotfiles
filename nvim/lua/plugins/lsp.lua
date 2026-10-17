@@ -64,19 +64,13 @@ local servers = {
   stylua = {}, -- Formats Lua (this config) via `stylua --lsp`, using .stylua.toml
 
   lua_ls = {
-    -- Teach lua_ls about the Neovim runtime when editing this config
-    on_init = function(client)
-      if client.workspace_folders then
-        local path = client.workspace_folders[1].name
-        if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
-      end
-      client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-        runtime = { version = 'LuaJIT', path = { 'lua/?.lua', 'lua/?/init.lua' } },
-        workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
-      })
-    end,
     settings = {
-      Lua = { format = { enable = false } }, -- stylua formats instead
+      Lua = {
+        -- Teach lua_ls about Neovim's Lua API (`vim.*`) for editing this config
+        runtime = { version = 'LuaJIT' },
+        workspace = { library = { vim.env.VIMRUNTIME } },
+        format = { enable = false }, -- stylua formats instead
+      },
     },
   },
 }

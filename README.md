@@ -33,7 +33,7 @@ install-nerd-font.sh
 
 `nvim/` is linked to `~/.config/nvim`. Needs Neovim 0.12+, ripgrep, gcc,
 tree-sitter-cli and Node 22+ (Copilot). Plugins and language servers install on
-first start; run `:Copilot setup` once. Icons need a Nerd Font: `install-nerd-font.sh`.
+first start; run `:Copilot setup` once. To connect Claude Code, run `/ide` in it. Icons need a Nerd Font: `install-nerd-font.sh`.
 
 ## Other
 

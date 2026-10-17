@@ -6,6 +6,7 @@ vim.pack.add {
   'https://github.com/nvim-mini/mini.statusline', -- Simple statusline
   'https://github.com/christoomey/vim-tmux-navigator', -- Ctrl-h/j/k/l across nvim splits, and out into tmux panes
   'https://github.com/github/copilot.vim', -- Copilot ghost text: <Tab> accept, <M-]>/<M-[> next/previous, <C-]> dismiss
+  { src = 'https://github.com/folke/which-key.nvim', version = vim.version.range '*' }, -- Pause after Space, g, Ctrl-w, ... to see the keys that can follow
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' }, -- Installs parsers for syntax highlighting and indentation
 }
 
@@ -20,6 +21,16 @@ require('mini.icons').setup()
 MiniIcons.mock_nvim_web_devicons()
 
 require('guess-indent').setup {}
+
+-- Labels for the Space prefixes; the keys themselves are listed from each mapping's desc
+require('which-key').setup {
+  spec = {
+    { '<leader>a', group = 'Claude' },
+    { '<leader>c', group = 'Code' },
+    { '<leader>f', group = 'Find' },
+    { '<leader>h', group = 'Git hunk' },
+  },
+}
 
 local gitsigns = require 'gitsigns'
 gitsigns.setup {

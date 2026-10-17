@@ -5,6 +5,11 @@
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
+    "claudecode.nvim": {
+      "rev": "2e6ea6f2a63cdf4fd3c05e6a054151d46848d319",
+      "src": "https://github.com/coder/claudecode.nvim",
+      "version": ">=0.0.0"
+    },
     "copilot.vim": {
       "rev": "a12fd5672110c8aa7e3c8419e28c96943ca179be",
       "src": "https://github.com/github/copilot.vim"
@@ -61,6 +66,11 @@
     "vscode.nvim": {
       "rev": "6439ed89d0e10193f07e92268a321d7c6f6e93ee",
       "src": "https://github.com/Mofiqul/vscode.nvim"
+    },
+    "which-key.nvim": {
+      "rev": "fcbf4eea17cb299c02557d576f0d568878e354a4",
+      "src": "https://github.com/folke/which-key.nvim",
+      "version": ">=0.0.0"
     }
   }
 }
