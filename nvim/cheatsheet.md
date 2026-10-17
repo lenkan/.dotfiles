@@ -1,35 +1,69 @@
-# Cheat sheet  (q to close, edit nvim/cheatsheet.md to change)
+# Cheat sheet (q to close)
 
-## Find                                  ## Windows
-Space ff    files                        Ctrl-w v / s   split right / below
-Space fg    grep                         Ctrl-h/j/k/l   move between splits
-Space Space open buffers                 Ctrl-w q       close split
-Space fd    diagnostics                  Ctrl-w o       close all others
-Space fc    commands (palette)           Ctrl-w =       even out sizes
-Space fh    help                         Ctrl-w _ / |   maximise height / width
-                                         \              file tree (g? for its keys)
+## Find
+Space ff          files
+Space fg          grep
+Space Space       open buffers
+Space fd          diagnostics
+Space fc          commands
+Space fh          help
+
+## Windows
+Ctrl-w v / s      split right / below
+Ctrl-h/j/k/l      move between splits
+Ctrl-w q          close split
+Ctrl-w o          close all others
+Ctrl-w =          even out sizes
+Ctrl-w _ / |      maximise height / width
+\                 file tree (g? for its keys)
+
+## Buffers
+Ctrl-o / Ctrl-i   jump back / forward
+Ctrl-^            previous file
+:bd               close buffer
+
 ## Code
-gd          definition                   ## Buffers
-K           hover docs                   Ctrl-o / Ctrl-i  jump back / forward
-grr / gri   references / implementation  Ctrl-^          previous file
-grn         rename                       :bd             close buffer
-gra         code actions
-grq         quick fix for this problem   ## Edit
-gO / gW     symbols in file / workspace  gcc / gc       toggle comment (line / selection)
-:Format     format (also Space cf)       :noa w         save without formatting
-:FixAll     apply all auto-fixes         :%s/a/b/g      replace in file
-:OrganizeImports                         u / Ctrl-r     undo / redo
+gd                definition
+K                 hover docs
+grr / gri         references / implementation
+grn               rename
+gra               code actions
+grq               quick fix for this problem
+gO / gW           symbols in file / workspace
+:Format           format (also Space cf)
+:FixAll           apply all auto-fixes
+:OrganizeImports  sort imports
 
-## Problems                              ## Git
-]d / [d     next / previous diagnostic   ]h / [h        next / previous hunk
-                                         Space hp       preview hunk
-                                         Space hs / hr  stage / reset hunk
-## Completion                            Space hb       blame line
-Ctrl-n/p    select   Ctrl-y accept       git difftool -d  diff all files (alias gd)
-Tab         accept Copilot suggestion
-Alt-] / [   next / previous Copilot      ## Claude (run /ide in claude)
-Ctrl-]      dismiss Copilot              Space as   send selection / tree file
-                                         :w / :q    accept / reject a diff
+## Edit
+gcc / gc          toggle comment (line / selection)
+:noa w            save without formatting
+:%s/a/b/g         replace in file
+u / Ctrl-r        undo / redo
+
+## Problems
+]d / [d           next / previous diagnostic
+
+## Completion
+Ctrl-n / Ctrl-p   select
+Ctrl-y            accept
+Tab               accept Copilot suggestion
+Alt-] / Alt-[     next / previous Copilot
+Ctrl-]            dismiss Copilot
+
+## Git
+]h / [h           next / previous hunk
+Space hp          preview hunk
+Space hs / hr     stage / reset hunk
+Space hb          blame line
+git difftool -d   diff all files (alias gd)
+
+## Claude
+:ClaudeCodeStart  then /ide in claude
+Space as          send selection / tree file
+:w / :q           accept / reject a diff
+
 ## Misc
-:restart    restart nvim, keep session   :terminal   shell (Esc Esc to leave)
-r in tree   rename file, fixes imports   :wa         save the files it changed
+:restart          restart nvim, keep session
+:terminal         shell (Esc Esc to leave)
+r in tree         rename file, fixes imports
+:wa               save the files it changed

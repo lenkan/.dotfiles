@@ -1,8 +1,18 @@
 vim.pack.add {
-  'https://github.com/neovim/nvim-lspconfig', -- Default configs (cmd, filetypes, root markers) for each server
-  'https://github.com/mason-org/mason.nvim', -- Installs language servers into nvim's data dir, no sudo
-  'https://github.com/mason-org/mason-lspconfig.nvim', -- Installs and enables the servers listed below
+  'https://github.com/neovim/nvim-lspconfig', -- Default config (cmd, filetypes, root markers) per server
+  'https://github.com/mason-org/mason.nvim', -- Installs language servers, no sudo
+  'https://github.com/mason-org/mason-lspconfig.nvim', -- Installs and enables the servers below
   { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' }, -- Completion menu
+}
+
+vim.diagnostic.config {
+  severity_sort = true,
+  float = { border = 'rounded', source = 'if_many' },
+  underline = { severity = { min = vim.diagnostic.severity.WARN } },
+  virtual_text = true,
+  jump = {
+    on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = 'cursor', focus = false } end,
+  },
 }
 
 local highlight_group = vim.api.nvim_create_augroup('user-lsp-highlight', { clear = true })
@@ -13,19 +23,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local map = function(keys, func, desc, mode) vim.keymap.set(mode or 'n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc }) end
     local builtin = require 'telescope.builtin'
 
-    -- Neovim's defaults (`:help lsp-defaults`): K hover, grn rename, gra code action,
-    -- grr references, gri implementation, grt type definition, gO document symbols.
-    -- The list-style ones are rebound to Telescope pickers on the same keys.
+    -- The list-style `:help lsp-defaults` keys, rebound to Telescope pickers
     map('gd', builtin.lsp_definitions, 'Go to definition')
     map('grr', builtin.lsp_references, 'References')
     map('gri', builtin.lsp_implementations, 'Go to implementation')
     map('grt', builtin.lsp_type_definitions, 'Go to type definition')
     map('gO', builtin.lsp_document_symbols, 'Document symbols')
     map('gW', builtin.lsp_dynamic_workspace_symbols, 'Workspace symbols')
-    -- Like gra, but only fixes for the problem under the cursor (no ts_ls refactors)
+    -- Like gra without ts_ls's refactors
     map('grq', function() vim.lsp.buf.code_action { context = { only = { 'quickfix' } } } end, 'Quick fix')
 
-    -- Highlight other uses of the symbol under the cursor
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method('textDocument/documentHighlight', event.buf) then
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, { buffer = event.buf, group = highlight_group, callback = vim.lsp.buf.document_highlight })
@@ -42,31 +49,24 @@ vim.api.nvim_create_autocmd('LspDetach', {
   end,
 })
 
--- Servers to install and enable. Settings here are merged over nvim-lspconfig's defaults.
--- See `:help lsp-config`.
+-- Merged over nvim-lspconfig's defaults
 ---@type table<string, vim.lsp.Config>
 local servers = {
   bashls = {}, -- Uses shellcheck and shfmt from PATH
-  ts_ls = {
-    -- Biome formats JS/TS, as in VS Code
-    on_init = function(client)
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.documentRangeFormattingProvider = false -- used by gq
-    end,
-  },
+  ts_ls = {},
   biome = {}, -- Only attaches in projects with biome.json(c)
   jsonls = {},
   cssls = {},
   html = {},
   basedpyright = {},
-  ruff = {}, -- Python lint and format
+  ruff = {},
   rust_analyzer = {},
-  stylua = {}, -- Formats Lua (this config) via `stylua --lsp`, using .stylua.toml
+  stylua = {}, -- Runs `stylua --lsp`, using .stylua.toml
 
   lua_ls = {
     settings = {
       Lua = {
-        -- Teach lua_ls about Neovim's Lua API (`vim.*`) for editing this config
+        -- Know Neovim's Lua API (`vim.*`)
         runtime = { version = 'LuaJIT' },
         workspace = { library = { vim.env.VIMRUNTIME } },
         format = { enable = false }, -- stylua formats instead
@@ -80,11 +80,10 @@ for name, server in pairs(servers) do
 end
 
 require('mason').setup {}
--- Installs any missing server, then enables every Mason-installed server (`:help vim.lsp.enable()`)
+-- Also enables every server installed in Mason, listed here or not
 require('mason-lspconfig').setup { ensure_installed = vim.tbl_keys(servers) }
 
--- Default keys: <C-n>/<C-p> select, <C-y> accept, <C-e> close, <C-k> signature help.
--- <C-space> (open the menu by hand) never arrives inside tmux, since it is the tmux prefix.
+-- <C-space> (open the menu by hand) never arrives inside tmux, since it is the tmux prefix
 require('blink.cmp').setup {
   -- The Lua matcher avoids downloading a prebuilt Rust binary
   fuzzy = { implementation = 'lua' },

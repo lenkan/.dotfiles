@@ -1,12 +1,11 @@
 vim.pack.add {
-  { src = 'https://github.com/coder/claudecode.nvim', version = vim.version.range '*' }, -- Lets Claude Code (in another tmux pane) see your selection and show its edits as diffs here
+  { src = 'https://github.com/coder/claudecode.nvim', version = vim.version.range '*' }, -- Lets Claude Code in another pane see the selection and show its edits as diffs
 }
 
--- Claude runs outside nvim: start `claude` in another pane from the same folder and run /ide to connect.
--- Its edits open as diffs here: :w accepts, :q rejects.
-require('claudecode').setup { terminal = { provider = 'none' } }
+-- No terminal in nvim: run :ClaudeCodeStart, then `claude` in another pane and /ide to connect.
+-- Not started by default, so commit messages and difftool don't show up in /ide.
+require('claudecode').setup { auto_start = false, terminal = { provider = 'none' } }
 
--- Send the selection, or the file under the cursor in nvim-tree, to Claude as context
 vim.keymap.set('v', '<leader>as', '<Cmd>ClaudeCodeSend<CR>', { desc = 'Send selection to Claude' })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'NvimTree',

@@ -12,7 +12,7 @@
 	tool = nvim_difftool
 [difftool]
 	prompt = false
-# Neovim's built-in difftool: `git difftool -d` shows every changed file side by side
+# `git difftool -d` shows every changed file in nvim
 [difftool "nvim_difftool"]
 	cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
 [gpg]

@@ -5,8 +5,7 @@ DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 # shellcheck source=SCRIPTDIR/../../scripts/lib/distro.sh
 . "$DIR/../../scripts/lib/distro.sh"
 
-# Source Code Pro with icons for nvim. Nerd Fonts renames it to SauceCodePro.
-# Not the Mono variant: that one shrinks icons to fit one cell, which makes them hard to see.
+# Nerd Fonts' Source Code Pro. Not the Mono variant: it shrinks icons to one cell.
 family='SauceCodePro Nerd Font'
 
 if is_wsl; then
