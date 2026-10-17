@@ -35,6 +35,8 @@ link_into "$HOME/.local/bin" "$DIR"/.local/bin/*
 
 link_into "$HOME/.claude" "$DIR"/claude/*
 
+link_into "${XDG_CONFIG_HOME:-$HOME/.config}" "$DIR"/nvim
+
 # VS Code on WSL runs on the Windows side and won't follow symlinks across /mnt/c.
 if is_wsl; then
 	win_user=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')

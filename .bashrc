@@ -89,5 +89,5 @@ docker --version &>/dev/null && eval "$(docker completion bash)"
 complete -F _complete_alias "${!BASH_ALIASES[@]}"
 uv --version &>/dev/null && eval "$(uv generate-shell-completion bash)"
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'

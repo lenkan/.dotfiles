@@ -8,6 +8,13 @@
 	lg = !"git lg1"
 [init]
 	defaultBranch = main
+[diff]
+	tool = nvim_difftool
+[difftool]
+	prompt = false
+# Neovim's built-in difftool: `git difftool -d` shows every changed file side by side
+[difftool "nvim_difftool"]
+	cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
 [gpg]
 	format = ssh
 [commit]

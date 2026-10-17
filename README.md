@@ -26,7 +26,14 @@ wsl --terminate <distroname>
 ```bash
 install-nodejs.sh   install-deno.sh    install-rust.sh   install-uv.sh
 install-aws.sh      install-gcloud.sh  install-docker.sh install-code.sh
+install-nerd-font.sh
 ```
+
+## Neovim
+
+`nvim/` is linked to `~/.config/nvim`. Needs Neovim 0.12+, ripgrep, gcc,
+tree-sitter-cli and Node 22+ (Copilot). Plugins and language servers install on
+first start; run `:Copilot setup` once. Icons need a Nerd Font: `install-nerd-font.sh`.
 
 ## Other
 
