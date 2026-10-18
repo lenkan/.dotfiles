@@ -40,7 +40,8 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-	if [ -f "${HOMEBREW_PREFIX:-}/etc/profile.d/bash_completion.sh" ]; then
+	# Guard: with HOMEBREW_PREFIX unset this would match Fedora's /etc/profile.d
+	if [ -n "${HOMEBREW_PREFIX:-}" ] && [ -f "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]; then
 		. "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
 	elif [ -f /usr/share/bash-completion/bash_completion ]; then
 		. /usr/share/bash-completion/bash_completion

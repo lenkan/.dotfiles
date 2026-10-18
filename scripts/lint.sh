@@ -8,9 +8,7 @@ files=(
 	"$root"/.bash_profile
 	"$root"/.bash_prompt
 	"$root"/.bashrc
-	"$root"/scripts/*.sh
-	"$root"/*/bootstrap.sh
-	"$root"/*/sync.sh
+	"$root"/*/*.sh
 	"$root"/bin/*
 	"$root"/*/bin/*
 	"$root"/*/lib/*.sh
