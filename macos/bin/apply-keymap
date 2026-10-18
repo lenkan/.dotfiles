@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+script_dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+keymap=$(jq -c . "$script_dir/../hidutil/keymap.json")
+
+hidutil property --set "$keymap"

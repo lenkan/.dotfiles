@@ -8,4 +8,5 @@ if [ "$(uname -s)" != Darwin ]; then
 	exit 1
 fi
 
+"$DIR/setup-defaults.sh"
 exec "$DIR/../scripts/sync.sh"

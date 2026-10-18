@@ -26,7 +26,8 @@ alias gd='git difftool -d'
 alias n='npm run'
 alias nn='npm run'
 alias pp='pnpm run'
-alias open='xdg-open'
+alias k='kubectl'
+alias kk='kubectl'
 
 # Dotenv
 dotenv() {

@@ -10,6 +10,7 @@ files=(
 	"$root"/.bashrc
 	"$root"/scripts/*.sh
 	"$root"/*/bootstrap.sh
+	"$root"/*/sync.sh
 	"$root"/bin/*
 	"$root"/*/bin/*
 	"$root"/*/lib/*.sh

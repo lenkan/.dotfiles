@@ -1,0 +1,12 @@
+{
+    "UserKeyMapping": [
+        {
+            "HIDKeyboardModifierMappingSrc": 30064771303,
+            "HIDKeyboardModifierMappingDst": 30064771302
+        },
+        {
+            "HIDKeyboardModifierMappingSrc": 30064771302,
+            "HIDKeyboardModifierMappingDst": 30064771303
+        }
+    ]
+}

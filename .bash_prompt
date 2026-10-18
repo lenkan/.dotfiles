@@ -72,6 +72,15 @@ function prompt_command() {
 		aws_prompt=" $BLUE$AWS_PROFILE@aws$NOCOLOR"
 	fi
 
+	# kubectl context and kubens namespace
+	local kube_prompt=
+	if command -v kubectl >/dev/null 2>&1; then
+		local kube_info
+		kube_info="$(kubectl config view --minify -o jsonpath='{.current-context}{"|"}{..namespace}' 2>/dev/null)"
+		local kube_ctx="${kube_info%%|*}" kube_ns="${kube_info##*|}"
+		[ -n "$kube_ctx" ] && kube_prompt=" $CYAN⎈ $kube_ctx:${kube_ns:-default}$NOCOLOR"
+	fi
+
 	local user_prompt="$user_color$USER$NOCOLOR"
 
 	local host_prompt="@$YELLOW$HOSTNAME$NOCOLOR"
@@ -81,7 +90,7 @@ function prompt_command() {
 	[ -n "$user_prompt" ] || [ -n "$host_prompt" ] && login_delimiter=":"
 
 	# Format prompt
-	first_line="$container_prompt$user_prompt$host_prompt$login_delimiter$WHITE\w$NOCOLOR$git_prompt$venv_prompt$aws_prompt"
+	first_line="$container_prompt$user_prompt$host_prompt$login_delimiter$WHITE\w$NOCOLOR$git_prompt$venv_prompt$aws_prompt$kube_prompt"
 	# Text (commands) inside \[...\] does not impact line length calculation which fixes stange bug when looking through the history
 	# $? is a status of last command, should be processed every time prompt prints
 	second_line="\`if [ \$? = 0 ]; then echo \[\$CYAN\]; else echo \[\$RED\]; fi\`\\$\[\$NOCOLOR\] "

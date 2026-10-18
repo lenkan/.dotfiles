@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC1090,SC1091
 PATH="$HOME/.local/bin:$PATH"
+# Put Homebrew ahead of system paths so brewed tools (e.g. git) win over
+# Apple's /usr/bin versions, which don't ship bash completion scripts.
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv bash)"
 
 # If not running interactively, don't do anything
 case $- in
@@ -37,7 +40,9 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
+	if [ -f "${HOMEBREW_PREFIX:-}/etc/profile.d/bash_completion.sh" ]; then
+		. "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
+	elif [ -f /usr/share/bash-completion/bash_completion ]; then
 		. /usr/share/bash-completion/bash_completion
 	elif [ -f /etc/bash_completion ]; then
 		. /etc/bash_completion
@@ -60,6 +65,10 @@ fi
 
 if [ -d /usr/local/go ]; then
 	PATH="/usr/local/go/bin:$PATH"
+fi
+
+if [ -d "$HOME/.opencode" ]; then
+	PATH="$HOME/.opencode/bin:$PATH"
 fi
 
 # pnpm
