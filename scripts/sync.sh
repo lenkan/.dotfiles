@@ -17,17 +17,27 @@ else
 	platforms=(linux)
 fi
 
-linked_dirs=()
+# Remove links into this repo whose target was moved or deleted
+prune() {
+	local link
+	for link in "$@"; do
+		if [ -L "$link" ] && [ ! -e "$link" ]; then
+			case "$(readlink "$link")" in
+			"$DIR"/*) rm -v "$link" ;;
+			esac
+		fi
+	done
+}
 
 # link_into <destdir> <src>...
 link_into() {
 	local destdir="$1" target src
 	shift
-	linked_dirs+=("$destdir")
 	mkdir -p "$destdir"
+	prune "$destdir"/*
 	for src in "$@"; do
 		[ -e "$src" ] || continue
-		target="$destdir/$(basename "$src")"
+		target="$destdir/${src##*/}"
 		if [ -e "$target" ] && [ ! -L "$target" ]; then
 			echo "Skipping $target: exists and is not a symlink, remove it to link" >&2
 			continue
@@ -44,6 +54,7 @@ for filename in "$DIR"/.*; do
 		ln -svf "$filename" "$HOME/$name"
 	fi
 done
+prune "$HOME"/.*
 
 config="${XDG_CONFIG_HOME:-$HOME/.config}"
 
@@ -57,21 +68,4 @@ for platform in "${platforms[@]}"; do
 	link_into "$HOME/.local/bin" "$DIR/$platform"/bin/*
 	# shellcheck source=/dev/null
 	[ -f "$DIR/$platform/sync.sh" ] && . "$DIR/$platform/sync.sh"
-done
-
-# Remove links into this repo whose target was moved or deleted
-prune() {
-	local link
-	for link in "$@"; do
-		if [ -L "$link" ] && [ ! -e "$link" ]; then
-			case "$(readlink "$link")" in
-			"$DIR"/*) rm -v "$link" ;;
-			esac
-		fi
-	done
-}
-
-prune "$HOME"/.*
-for dir in "${linked_dirs[@]}"; do
-	prune "$dir"/*
 done
