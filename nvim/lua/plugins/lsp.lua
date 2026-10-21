@@ -85,6 +85,8 @@ require('mason-lspconfig').setup { ensure_installed = vim.tbl_keys(servers) }
 
 -- <C-space> (open the menu by hand) never arrives inside tmux, since it is the tmux prefix
 require('blink.cmp').setup {
+  -- <CR> accepts the menu item; <Tab> only jumps in snippets, otherwise falls through to copilot.vim
+  keymap = { preset = 'enter' },
   -- The Lua matcher avoids downloading a prebuilt Rust binary
   fuzzy = { implementation = 'lua' },
   signature = { enabled = true },
