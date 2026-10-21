@@ -63,6 +63,13 @@ git difftool -d   diff all files (alias gd)
 Space as          send selection / tree file
 :w / :q           accept / reject a diff
 
+## Database
+Space db          sidebar (A add conn, ? help)
+Space df          attach this .sql to a conn
+Space dr          run query under cursor / selection
+Space dR          run whole buffer
+:w                format (doesn't run)
+
 ## Misc
 :restart          restart nvim, keep session
 :terminal         shell (Esc Esc to leave)

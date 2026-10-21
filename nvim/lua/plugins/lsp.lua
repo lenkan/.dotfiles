@@ -82,7 +82,6 @@ end
 require('mason').setup {}
 -- Also enables every server installed in Mason, listed here or not
 require('mason-lspconfig').setup { ensure_installed = vim.tbl_keys(servers) }
-
 -- <C-space> (open the menu by hand) never arrives inside tmux, since it is the tmux prefix
 require('blink.cmp').setup {
   -- <CR> accepts the menu item; <Tab> only jumps in snippets, otherwise falls through to copilot.vim
@@ -90,4 +89,9 @@ require('blink.cmp').setup {
   -- The Lua matcher avoids downloading a prebuilt Rust binary
   fuzzy = { implementation = 'lua' },
   signature = { enabled = true },
+  sources = {
+    -- Only fills in buffers attached to a connection (database.lua)
+    per_filetype = { sql = { 'snippets', 'dadbod', 'buffer' } },
+    providers = { dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' } },
+  },
 }

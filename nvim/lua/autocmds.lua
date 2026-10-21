@@ -27,10 +27,25 @@ local function clients(bufnr, method)
   return vim.lsp.get_clients { bufnr = bufnr, name = name, method = method }, name
 end
 
+-- For file types without an LSP formatter: vim.b.format_cmd is a stdin-to-stdout command (argv list).
+-- Not 'formatprg' + `gggqG`: on an error that replaces the buffer with the error message.
+local function format_with_cmd(bufnr)
+  local cmd = vim.b[bufnr].format_cmd
+  if not cmd or vim.fn.executable(cmd[1]) == 0 then return end
+  local before = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local result = vim.system(cmd, { stdin = table.concat(before, '\n') .. '\n' }):wait(2000)
+  if result.code ~= 0 then return vim.notify(cmd[1] .. ': ' .. (result.stderr or ''), vim.log.levels.WARN) end
+  local lines = vim.split(result.stdout:gsub('\n$', ''), '\n')
+  if vim.deep_equal(lines, before) then return end
+  local view = vim.fn.winsaveview()
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+  vim.fn.winrestview(view)
+end
+
 local function format(bufnr)
   local formatters, name = clients(bufnr, 'textDocument/formatting')
   -- Without a formatter, vim.lsp.buf.format warns on every save
-  if #formatters == 0 then return end
+  if #formatters == 0 then return format_with_cmd(bufnr) end
   vim.lsp.buf.format { bufnr = bufnr, timeout_ms = 2000, name = name }
 end
 

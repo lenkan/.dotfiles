@@ -21,6 +21,7 @@ sudo dnf install -y \
 	jq \
 	keychain \
 	ncurses \
+	postgresql \
 	procps-ng \
 	python3-devel \
 	python3-pip \

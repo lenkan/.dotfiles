@@ -29,6 +29,7 @@ sudo apt-get install -y \
 	jq \
 	keychain \
 	ncurses-term \
+	postgresql-client \
 	python3-dev \
 	python3-pip \
 	python3-setuptools \
