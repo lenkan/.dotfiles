@@ -3,6 +3,7 @@ vim.pack.add {
   'https://github.com/nvim-mini/mini.icons', -- File type icons
   'https://github.com/NMAC427/guess-indent.nvim', -- Detects tabs vs spaces per file
   'https://github.com/lewis6991/gitsigns.nvim', -- Git change markers in the gutter, plus hunk actions
+  { src = 'https://github.com/akinsho/git-conflict.nvim', version = vim.version.range '*' }, -- Inline merge conflicts: co/ct/cb/c0 to resolve, ]x/[x to jump
   'https://github.com/nvim-mini/mini.statusline', -- Statusline
   'https://github.com/christoomey/vim-tmux-navigator', -- Ctrl-h/j/k/l across nvim splits
   'https://github.com/github/copilot.vim', -- Copilot inline suggestions
@@ -22,11 +23,18 @@ MiniIcons.mock_nvim_web_devicons()
 require('guess-indent').setup {}
 
 require('which-key').setup {
+  -- which-key never auto-pops on single letters besides g/z; c lists git-conflict's keys,
+  -- and only triggers in buffers that have c... mappings
+  triggers = {
+    { '<auto>', mode = 'nxso' },
+    { 'c', mode = 'n' },
+  },
   spec = {
     { '<leader>a', group = 'Claude' },
     { '<leader>c', group = 'Code' },
     { '<leader>f', group = 'Find' },
     { '<leader>h', group = 'Git hunk' },
+    { 'c', group = 'Git conflict' },
   },
 }
 
@@ -46,6 +54,16 @@ gitsigns.setup {
     map('n', '<leader>hd', gitsigns.diffthis, 'Diff against index')
   end,
 }
+
+require('git-conflict').setup()
+
+-- git-conflict adds its buffer keymaps asynchronously, after which-key has already scanned the buffer
+vim.api.nvim_create_autocmd('User', {
+  desc = 'Rescan git-conflict keymaps for which-key',
+  group = vim.api.nvim_create_augroup('user-git-conflict', { clear = true }),
+  pattern = { 'GitConflictDetected', 'GitConflictResolved' },
+  callback = function(args) require('which-key.buf').clear { buf = args.buf } end,
+})
 
 require('mini.statusline').setup {}
 
