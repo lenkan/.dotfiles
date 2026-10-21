@@ -16,6 +16,7 @@ Ctrl-w o          close all others
 Ctrl-w =          even out sizes
 Ctrl-w _ / |      maximise height / width
 \                 file tree (g? for its keys)
+Space fe          reveal current file in tree
 
 ## Buffers
 Ctrl-o / Ctrl-i   jump back / forward

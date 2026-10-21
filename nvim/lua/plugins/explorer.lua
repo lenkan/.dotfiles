@@ -7,6 +7,8 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
+-- Unlike \, never closes the tree when it's already open
+vim.keymap.set('n', '<leader>fe', function() require('nvim-tree.api').tree.find_file { open = true, focus = true } end, { desc = 'Reveal file in tree' })
 
 require('nvim-tree').setup {
   -- Dotfiles are shown and gitignored files hidden by default
