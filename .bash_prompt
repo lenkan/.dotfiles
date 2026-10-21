@@ -84,7 +84,8 @@ function prompt_command() {
 
 	local user_prompt="$user_color$USER$NOCOLOR"
 
-	local host_prompt="@$YELLOW$HOSTNAME$NOCOLOR"
+	local host_prompt=
+	[ -n "$remote" ] && host_prompt="@$YELLOW$HOSTNAME$NOCOLOR"
 
 	# Show delimiter if user or host visible
 	local login_delimiter=
