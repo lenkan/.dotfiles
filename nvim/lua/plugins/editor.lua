@@ -5,7 +5,6 @@ vim.pack.add {
   'https://github.com/lewis6991/gitsigns.nvim', -- Git change markers in the gutter, plus hunk actions
   { src = 'https://github.com/akinsho/git-conflict.nvim', version = vim.version.range '*' }, -- Inline merge conflicts: co/ct/cb/c0 to resolve, ]x/[x to jump
   'https://github.com/nvim-mini/mini.statusline', -- Statusline
-  'https://github.com/christoomey/vim-tmux-navigator', -- Ctrl-h/j/k/l across nvim splits
   'https://github.com/github/copilot.vim', -- Copilot inline suggestions
   { src = 'https://github.com/folke/which-key.nvim', version = vim.version.range '*' }, -- Shows the keys that can follow a prefix
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' }, -- Parsers for syntax highlighting and indentation

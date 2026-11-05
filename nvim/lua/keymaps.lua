@@ -1,5 +1,10 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left split' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to lower split' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to upper split' })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right split' })
+
 vim.keymap.set('n', '<leader>?', function()
   local buf = vim.fn.bufadd(vim.fn.stdpath 'config' .. '/cheatsheet.md')
   vim.fn.bufload(buf)
