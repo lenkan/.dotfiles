@@ -2,53 +2,44 @@
 
 Shared configs live at the root. `linux/`, `wsl/` and `macos/` hold what only applies there.
 
-## WSL
+## Install
+
+```bash
+git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
+~/.dotfiles/linux/bootstrap.sh  # or macos/bootstrap.sh, wsl/bootstrap.sh
+```
+
+On Linux and WSL, optional installers from `linux/bin/` are on `PATH`, e.g. `install-ghostty.sh`.
+
+### WSL
+
+Create the distro first. The password can be anything (bootstrap removes it).
 
 ```powershell
 wsl --install Ubuntu-24.04 --name <distroname>
 wsl --install FedoraLinux-44 --name <distroname>
 ```
 
-Password can be anything (bootstrap removes it).
+Inside it, install git before running the steps above:
 
 ```bash
 sudo dnf install -y git                             # Fedora
 sudo apt-get update && sudo apt-get install -y git  # Ubuntu
-
-git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
-~/.dotfiles/wsl/bootstrap.sh
 ```
+
+Then restart the distro:
 
 ```powershell
 wsl --terminate <distroname>
 ```
 
-## Linux
+## Machine-specific config
 
-```bash
-git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
-~/.dotfiles/linux/bootstrap.sh
-```
+These optional files live outside the repo and override the shared config:
 
-Optional installers from `linux/bin/` are on `PATH`, e.g. `install-ghostty.sh`.
-
-## macOS
-
-```bash
-git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
-~/.dotfiles/macos/bootstrap.sh
-```
-
-## Machine-specific git config
-
-`~/.gitconfig.local` is included last and overrides `.gitconfig`, e.g. a work identity:
-
-```ini
-[user]
-	name = ...
-	email = ...
-	signingkey = ...
-```
+- `~/.gitconfig.local`, e.g. a work `[user]`
+- `~/.bashrc.local`, for interactive shells only
+- `~/.nvim.local.lua`, runs after plugins are set up
 
 ## Neovim
 

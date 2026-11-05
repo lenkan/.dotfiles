@@ -89,6 +89,16 @@ if [ -f "$HOME/.cargo/env" ]; then
 	. "$HOME/.cargo/env"
 fi
 
+if command -v nvim &>/dev/null; then
+	export EDITOR='nvim'
+	export VISUAL='nvim'
+fi
+
+# Machine-specific overrides. Before the completions below so they pick up its aliases and PATH.
+if [ -f ~/.bashrc.local ]; then
+	. ~/.bashrc.local
+fi
+
 keychain --version &>/dev/null && eval "$(keychain --eval)"
 gh --version &>/dev/null && eval "$(gh completion -s bash)"
 npm --version &>/dev/null && eval "$(npm completion)"
@@ -96,8 +106,6 @@ node --version &>/dev/null && eval "$(node --completion-bash)"
 thefuck --version &>/dev/null && eval "$(thefuck --alias)"
 aws --version &>/dev/null && complete -C "$HOME/.local/bin/aws_completer" aws
 docker --version &>/dev/null && eval "$(docker completion bash)"
-complete -F _complete_alias "${!BASH_ALIASES[@]}"
 uv --version &>/dev/null && eval "$(uv generate-shell-completion bash)"
-
-export EDITOR='nvim'
-export VISUAL='nvim'
+# Keep last: the first prompt turns red if .bashrc ends on a failed && above
+complete -F _complete_alias "${!BASH_ALIASES[@]}"

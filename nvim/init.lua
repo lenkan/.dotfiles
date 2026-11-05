@@ -27,3 +27,7 @@ require 'plugins.explorer'
 require 'plugins.lsp'
 require 'plugins.claude'
 require 'plugins.database'
+
+-- Machine-specific overrides. Must stay last to win.
+local local_config = vim.fn.expand '~/.nvim.local.lua'
+if vim.uv.fs_stat(local_config) then dofile(local_config) end
