@@ -44,6 +44,7 @@ u / Ctrl-r        undo / redo
 
 ## Problems
 ]d / [d           next / previous diagnostic
+Ctrl-w d          show diagnostic popup
 
 ## Completion
 Ctrl-n / Ctrl-p   select
