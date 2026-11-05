@@ -10,9 +10,22 @@ vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle fi
 -- Unlike \, never closes the tree when it's already open
 vim.keymap.set('n', '<leader>fe', function() require('nvim-tree.api').tree.find_file { open = true, focus = true } end, { desc = 'Reveal file in tree' })
 
+-- Outside on_attach, which reruns when the tree gets a new buffer but the width persists
+local wide = false
+
 require('nvim-tree').setup {
   -- Dotfiles are shown and gitignored files hidden by default
   filters = { custom = { '^.git$' } },
+  view = { width = 40 },
+  on_attach = function(bufnr)
+    local api = require 'nvim-tree.api'
+    api.map.on_attach.default(bufnr)
+
+    vim.keymap.set('n', 'w', function()
+      wide = not wide
+      api.tree.resize { absolute = wide and 80 or 40 }
+    end, { buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvim-tree: Toggle Wide Mode' })
+  end,
 }
 
 -- nvim-tree doesn't tell language servers about renames, so ts_ls wouldn't update imports
