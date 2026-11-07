@@ -31,9 +31,9 @@ require('which-key').setup {
   spec = {
     { '<leader>a', group = 'Claude' },
     { '<leader>c', group = 'Code' },
-    { '<leader>d', group = 'Database' },
     { '<leader>f', group = 'Find' },
     { '<leader>h', group = 'Git hunk' },
+    { '<leader>p', group = 'Problems' },
     { 'c', group = 'Git conflict' },
   },
 }

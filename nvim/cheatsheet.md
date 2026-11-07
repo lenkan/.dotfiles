@@ -4,18 +4,23 @@
 Space ff          files
 Space fg          grep
 Space Space       open buffers
-Space fd          diagnostics
 Space fc          commands
 Space fh          help
+Space fs / fS     symbols in file / workspace
+
+## Swedish keys
+ö / ä             [ / ]  (öd / äd, öh / äh, ...)
+Ö / Ä             { / }  paragraph up / down
+¤                 $  end of line
 
 ## Windows
-Ctrl-w v / s      split right / below
+Space / or -      split right / below
 Ctrl-h/j/k/l      move between splits
-Ctrl-w q          close split
+Space x           close split
+Space z           zoom split (again to restore)
 Ctrl-w o          close all others
 Ctrl-w =          even out sizes
-Ctrl-w _ / |      maximise height / width
-\                 file tree (g? for its keys)
+Space e or \      file tree (g? for its keys)
 Space fe          reveal current file in tree
 w in tree         toggle wide mode (40 / 80)
 
@@ -43,8 +48,13 @@ gcc / gc          toggle comment (line / selection)
 u / Ctrl-r        undo / redo
 
 ## Problems
-]d / [d           next / previous diagnostic
-Ctrl-w d          show diagnostic popup
+äd / öd           next / previous problem
+äe / öe           next / previous error
+Space pp          show problem popup
+Space pf          fix problem
+Space pl / pL     list in file / everywhere
+Space py          copy message
+Space pv          toggle full messages under line
 
 ## Completion
 Ctrl-n / Ctrl-p   select
@@ -54,7 +64,7 @@ Alt-] / Alt-[     next / previous Copilot
 Ctrl-]            dismiss Copilot
 
 ## Git
-]h / [h           next / previous hunk
+äh / öh           next / previous hunk
 Space hp          preview hunk
 Space hs / hr     stage / reset hunk
 Space hb          blame line
@@ -66,10 +76,10 @@ Space as          send selection / tree file
 :w / :q           accept / reject a diff
 
 ## Database
-Space db          sidebar (A add conn, ? help)
-Space df          attach this .sql to a conn
-Space dr          run query under cursor / selection
-Space dR          run whole buffer
+:DBUIToggle       sidebar (A add conn, ? help)
+:DBUIFindBuffer   attach this .sql to a conn
+Space r           run query under cursor / selection
+Space R           run whole buffer
 :w                format (doesn't run)
 
 ## Misc

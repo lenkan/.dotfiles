@@ -7,6 +7,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
+vim.keymap.set('n', '<leader>e', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree' })
 -- Unlike \, never closes the tree when it's already open
 vim.keymap.set('n', '<leader>fe', function() require('nvim-tree.api').tree.find_file { open = true, focus = true } end, { desc = 'Reveal file in tree' })
 
