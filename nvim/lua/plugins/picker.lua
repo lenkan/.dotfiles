@@ -12,6 +12,7 @@ vim.pack.add {
 require('mini.pick').setup()
 require('mini.extra').setup()
 
+vim.api.nvim_set_hl(0, 'MiniPickMatchCurrent', { link = 'PmenuSel' })
 vim.keymap.set('n', '<leader>ff', '<Cmd>Pick files<CR>', { desc = 'Find files' })
 vim.keymap.set('n', '<leader>fg', '<Cmd>Pick grep_live<CR>', { desc = 'Live grep' })
 vim.keymap.set('n', '<leader><leader>', '<Cmd>Pick buffers<CR>', { desc = 'Open buffers' })
