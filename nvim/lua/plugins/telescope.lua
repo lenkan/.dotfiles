@@ -1,6 +1,11 @@
 vim.pack.add {
-  'https://github.com/nvim-lua/plenary.nvim', -- Lua helpers Telescope depends on
-  'https://github.com/nvim-telescope/telescope.nvim', -- Fuzzy finder for files, grep, buffers, LSP results
+  -- Lua helpers Telescope depends on. The last tag is from 2023.
+  { src = 'https://github.com/nvim-lua/plenary.nvim' },
+  -- Fuzzy finder for files, grep, buffers, LSP results
+  {
+    src = 'https://github.com/nvim-telescope/telescope.nvim',
+    version = vim.version.range '*',
+  },
 }
 
 local builtin = require 'telescope.builtin'

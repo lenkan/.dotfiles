@@ -9,13 +9,14 @@ vim.g.maplocalleader = ' '
 
 require 'options'
 require 'keymaps'
-require 'autocmds'
 
 -- Must be registered before the vim.pack.add calls below, which trigger the install
 vim.api.nvim_create_autocmd('PackChanged', {
   callback = function(ev)
     if ev.data.spec.name == 'nvim-treesitter' and ev.data.kind ~= 'delete' then
-      if not ev.data.active then vim.cmd.packadd 'nvim-treesitter' end
+      if not ev.data.active then
+        vim.cmd.packadd 'nvim-treesitter'
+      end
       vim.cmd 'TSUpdate'
     end
   end,
@@ -25,9 +26,11 @@ require 'plugins.editor'
 require 'plugins.telescope'
 require 'plugins.explorer'
 require 'plugins.lsp'
-require 'plugins.claude'
+require 'plugins.format'
 require 'plugins.database'
 
 -- Machine-specific overrides. Must stay last to win.
 local local_config = vim.fn.expand '~/.nvim.local.lua'
-if vim.uv.fs_stat(local_config) then dofile(local_config) end
+if vim.uv.fs_stat(local_config) then
+  dofile(local_config)
+end

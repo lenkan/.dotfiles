@@ -1,8 +1,24 @@
 vim.pack.add {
-  'https://github.com/neovim/nvim-lspconfig', -- Default config (cmd, filetypes, root markers) per server
-  'https://github.com/mason-org/mason.nvim', -- Installs language servers, no sudo
-  'https://github.com/mason-org/mason-lspconfig.nvim', -- Installs and enables the servers below
-  { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' }, -- Completion menu
+  -- Default config (cmd, filetypes, root markers) per server
+  {
+    src = 'https://github.com/neovim/nvim-lspconfig',
+    version = vim.version.range '*',
+  },
+  -- Installs language servers, no sudo
+  {
+    src = 'https://github.com/mason-org/mason.nvim',
+    version = vim.version.range '*',
+  },
+  -- Installs and enables the servers below
+  {
+    src = 'https://github.com/mason-org/mason-lspconfig.nvim',
+    version = vim.version.range '*',
+  },
+  -- Completion menu
+  {
+    src = 'https://github.com/saghen/blink.cmp',
+    version = vim.version.range '1.*',
+  },
 }
 
 vim.diagnostic.config {
@@ -12,7 +28,9 @@ vim.diagnostic.config {
   virtual_text = true,
   jump = {
     on_jump = function(_, bufnr)
-      if vim.diagnostic.config().virtual_lines then return end
+      if vim.diagnostic.config().virtual_lines then
+        return
+      end
       vim.diagnostic.open_float { bufnr = bufnr, scope = 'cursor', focus = false }
     end,
   },
@@ -20,15 +38,18 @@ vim.diagnostic.config {
 
 local builtin = require 'telescope.builtin'
 
-vim.keymap.set('n', ']e', function() vim.diagnostic.jump { count = vim.v.count1, severity = vim.diagnostic.severity.ERROR } end, { desc = 'Next error' })
-vim.keymap.set('n', '[e', function() vim.diagnostic.jump { count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR } end, { desc = 'Previous error' })
+local function jump_to_error(count) vim.diagnostic.jump { count = count, severity = vim.diagnostic.severity.ERROR } end
+vim.keymap.set('n', ']e', function() jump_to_error(vim.v.count1) end, { desc = 'Next error' })
+vim.keymap.set('n', '[e', function() jump_to_error(-vim.v.count1) end, { desc = 'Previous error' })
 
 vim.keymap.set('n', '<leader>pp', vim.diagnostic.open_float, { desc = 'Show problem' })
 vim.keymap.set('n', '<leader>pl', function() builtin.diagnostics { bufnr = 0 } end, { desc = 'List problems in file' })
 vim.keymap.set('n', '<leader>pL', builtin.diagnostics, { desc = 'List all problems' })
 vim.keymap.set('n', '<leader>py', function()
   local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line '.' - 1 })
-  if #diagnostics == 0 then return vim.notify 'No problems on this line' end
+  if #diagnostics == 0 then
+    return vim.notify 'No problems on this line'
+  end
   table.sort(diagnostics, function(a, b) return a.severity < b.severity end)
   vim.fn.setreg(vim.v.register, table.concat(vim.tbl_map(function(d) return d.message end, diagnostics), '\n'))
 end, { desc = 'Copy problem message' })
@@ -42,24 +63,38 @@ local highlight_group = vim.api.nvim_create_augroup('user-lsp-highlight', { clea
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
   callback = function(event)
-    local map = function(keys, func, desc, mode) vim.keymap.set(mode or 'n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc }) end
-
     -- The list-style `:help lsp-defaults` keys, rebound to Telescope pickers
-    map('gd', builtin.lsp_definitions, 'Go to definition')
-    map('grr', builtin.lsp_references, 'References')
-    map('gri', builtin.lsp_implementations, 'Go to implementation')
-    map('grt', builtin.lsp_type_definitions, 'Go to type definition')
-    map('gO', builtin.lsp_document_symbols, 'Document symbols')
-    map('gW', builtin.lsp_dynamic_workspace_symbols, 'Workspace symbols')
+    vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = event.buf, desc = 'LSP: Go to definition' })
+    vim.keymap.set('n', 'grr', builtin.lsp_references, { buffer = event.buf, desc = 'LSP: References' })
+    vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = event.buf, desc = 'LSP: Go to implementation' })
+    vim.keymap.set(
+      'n',
+      'grt',
+      builtin.lsp_type_definitions,
+      { buffer = event.buf, desc = 'LSP: Go to type definition' }
+    )
+    vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = event.buf, desc = 'LSP: Document symbols' })
+    vim.keymap.set(
+      'n',
+      'gW',
+      builtin.lsp_dynamic_workspace_symbols,
+      { buffer = event.buf, desc = 'LSP: Workspace symbols' }
+    )
     -- Like gra without ts_ls's refactors
     local quick_fix = function() vim.lsp.buf.code_action { context = { only = { 'quickfix' } } } end
-    map('grq', quick_fix, 'Quick fix')
-    map('<leader>pf', quick_fix, 'Fix problem')
+    vim.keymap.set('n', 'grq', quick_fix, { buffer = event.buf, desc = 'LSP: Quick fix' })
+    vim.keymap.set('n', '<leader>pf', quick_fix, { buffer = event.buf, desc = 'LSP: Fix problem' })
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method('textDocument/documentHighlight', event.buf) then
-      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, { buffer = event.buf, group = highlight_group, callback = vim.lsp.buf.document_highlight })
-      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, { buffer = event.buf, group = highlight_group, callback = vim.lsp.buf.clear_references })
+      vim.api.nvim_create_autocmd(
+        { 'CursorHold', 'CursorHoldI' },
+        { buffer = event.buf, group = highlight_group, callback = vim.lsp.buf.document_highlight }
+      )
+      vim.api.nvim_create_autocmd(
+        { 'CursorMoved', 'CursorMovedI' },
+        { buffer = event.buf, group = highlight_group, callback = vim.lsp.buf.clear_references }
+      )
     end
   end,
 })
