@@ -7,8 +7,8 @@ DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 
 # Builds Ghostty from source into ~/.local, per https://ghostty.org/docs/install/build.
 # Each Ghostty release needs one exact Zig version (table on that page): bump both together.
-ghostty_version=1.3.1
-zig_version=0.15.2
+ghostty_version=1.4.0
+zig_version=0.17.0
 
 # Public keys from ghostty.org/docs/install/build and ziglang.org/download
 ghostty_key=RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
@@ -25,7 +25,7 @@ if "$HOME/.local/bin/ghostty" +version 2>/dev/null | grep -qF "$ghostty_version"
 fi
 
 # Not dnf's zig: it is usually the wrong version
-sudo dnf install -y gtk4-devel gtk4-layer-shell-devel libadwaita-devel gettext minisign adobe-source-code-pro-fonts
+sudo dnf install -y gtk4-devel gtk4-layer-shell-devel libadwaita-devel libglvnd-devel gettext minisign adobe-source-code-pro-fonts
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
