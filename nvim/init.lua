@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd('PackChanged', {
 })
 
 require 'plugins.editor'
-require 'plugins.telescope'
+require 'plugins.picker'
 require 'plugins.explorer'
 require 'plugins.lsp'
 require 'plugins.format'

@@ -2,7 +2,9 @@ vim.o.number = true
 vim.o.showmode = false
 
 -- Scheduled because detecting the clipboard provider slows down startup
-vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
+vim.schedule(function()
+  vim.o.clipboard = 'unnamedplus'
+end)
 
 vim.o.tabstop = 4
 vim.o.shiftwidth = 0

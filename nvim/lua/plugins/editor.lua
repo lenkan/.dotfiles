@@ -33,7 +33,7 @@ vim.cmd.colorscheme 'vscode'
 vim.g.copilot_filetypes = { gitcommit = true }
 
 require('mini.icons').setup()
--- Telescope and nvim-tree look for nvim-web-devicons; this serves them mini.icons instead
+-- nvim-tree looks for nvim-web-devicons; this serves it mini.icons instead
 MiniIcons.mock_nvim_web_devicons()
 
 require('guess-indent').setup {}
@@ -49,26 +49,24 @@ require('which-key').setup {
 local gitsigns = require 'gitsigns'
 gitsigns.setup {
   on_attach = function(bufnr)
-    vim.keymap.set('n', ']h', function() gitsigns.nav_hunk 'next' end, { buffer = bufnr, desc = 'Next git hunk' })
-    vim.keymap.set('n', '[h', function() gitsigns.nav_hunk 'prev' end, { buffer = bufnr, desc = 'Previous git hunk' })
+    vim.keymap.set('n', ']h', function()
+      gitsigns.nav_hunk 'next'
+    end, { buffer = bufnr, desc = 'Next git hunk' })
+    vim.keymap.set('n', '[h', function()
+      gitsigns.nav_hunk 'prev'
+    end, { buffer = bufnr, desc = 'Previous git hunk' })
 
     vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { buffer = bufnr, desc = 'Preview hunk' })
     vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { buffer = bufnr, desc = 'Reset hunk' })
-    vim.keymap.set(
-      'v',
-      '<leader>hr',
-      function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
-      { buffer = bufnr, desc = 'Reset selected lines' }
-    )
+    vim.keymap.set('v', '<leader>hr', function()
+      gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+    end, { buffer = bufnr, desc = 'Reset selected lines' })
     vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, { buffer = bufnr, desc = 'Stage hunk' })
     vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer, { buffer = bufnr, desc = 'Stage file' })
     vim.keymap.set('n', '<leader>hU', gitsigns.reset_buffer_index, { buffer = bufnr, desc = 'Unstage file' })
-    vim.keymap.set(
-      'n',
-      '<leader>hb',
-      function() gitsigns.blame_line { full = true } end,
-      { buffer = bufnr, desc = 'Blame line' }
-    )
+    vim.keymap.set('n', '<leader>hb', function()
+      gitsigns.blame_line { full = true }
+    end, { buffer = bufnr, desc = 'Blame line' })
     vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { buffer = bufnr, desc = 'Diff against index' })
   end,
 }
@@ -98,7 +96,9 @@ vim.api.nvim_create_autocmd('FileType', {
       return treesitter_start(args.buf, language)
     end
     if vim.tbl_contains(require('nvim-treesitter').get_available(), language) then
-      require('nvim-treesitter').install(language):await(function() treesitter_start(args.buf, language) end)
+      require('nvim-treesitter').install(language):await(function()
+        treesitter_start(args.buf, language)
+      end)
     end
   end,
 })

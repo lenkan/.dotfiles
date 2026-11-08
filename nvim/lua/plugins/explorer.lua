@@ -16,15 +16,41 @@ vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', {
 
 local api = require 'nvim-tree.api'
 
-vim.keymap.set(
-  'n',
-  '<leader>fe',
-  function() api.tree.find_file { open = true, focus = true } end,
-  { desc = 'Reveal file in tree' }
-)
+vim.keymap.set('n', '<leader>fe', function()
+  api.tree.find_file { open = true, focus = true }
+end, { desc = 'Reveal file in tree' })
 
 -- Outside on_attach, which reruns when the tree gets a new buffer but the width persists
 local wide = false
+
+local git = require 'lenkan.git'
+
+-- The file or directory under the cursor in the tree
+local function node_path()
+  local node = api.tree.get_node_under_cursor()
+  return node and node.absolute_path
+end
+
+local function git_diff()
+  local path = node_path()
+  if path then
+    git.show_diff(path)
+  end
+end
+
+local function git_add()
+  local path = node_path()
+  if path and git.stage(path) then
+    api.tree.reload()
+  end
+end
+
+local function git_restore()
+  local path = node_path()
+  if path and git.unstage(path) then
+    api.tree.reload()
+  end
+end
 
 require('nvim-tree').setup {
   -- Dotfiles are shown and gitignored files hidden by default
@@ -38,23 +64,9 @@ require('nvim-tree').setup {
       api.tree.resize { absolute = wide and 80 or 40 }
     end, { buffer = bufnr, nowait = true, desc = 'nvim-tree: Toggle Wide Mode' })
 
-    vim.keymap.set('n', 'hs', function()
-      local node = api.tree.get_node_under_cursor()
-      local result = vim.system({ 'git', 'add', '--', node.absolute_path }):wait()
-      if result.code ~= 0 then
-        return vim.notify(result.stderr, vim.log.levels.ERROR)
-      end
-      api.tree.reload()
-    end, { buffer = bufnr, desc = 'nvim-tree: Git Stage' })
-
-    vim.keymap.set('n', 'hu', function()
-      local node = api.tree.get_node_under_cursor()
-      local result = vim.system({ 'git', 'restore', '--staged', '--', node.absolute_path }):wait()
-      if result.code ~= 0 then
-        return vim.notify(result.stderr, vim.log.levels.ERROR)
-      end
-      api.tree.reload()
-    end, { buffer = bufnr, desc = 'nvim-tree: Git Unstage' })
+    vim.keymap.set('n', 'ga', git_add, { buffer = bufnr, desc = 'nvim-tree: Git Stage' })
+    vim.keymap.set('n', 'gu', git_restore, { buffer = bufnr, desc = 'nvim-tree: Git Unstage' })
+    vim.keymap.set('n', 'gd', git_diff, { buffer = bufnr, desc = 'nvim-tree: Git Diff' })
   end,
 }
 
