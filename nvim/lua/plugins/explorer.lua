@@ -38,6 +38,13 @@ local function git_diff()
   end
 end
 
+local function git_log()
+  local path = node_path()
+  if path then
+    require('mini.extra').pickers.git_commits { path = path }
+  end
+end
+
 local function git_add()
   local path = node_path()
   if path and git.stage(path) then
@@ -67,6 +74,7 @@ require('nvim-tree').setup {
     vim.keymap.set('n', 'ga', git_add, { buffer = bufnr, desc = 'nvim-tree: Git Stage' })
     vim.keymap.set('n', 'gu', git_restore, { buffer = bufnr, desc = 'nvim-tree: Git Unstage' })
     vim.keymap.set('n', 'gd', git_diff, { buffer = bufnr, desc = 'nvim-tree: Git Diff' })
+    vim.keymap.set('n', 'gl', git_log, { buffer = bufnr, desc = 'nvim-tree: Git Log' })
   end,
 }
 
