@@ -50,13 +50,15 @@ local function git_restore()
 end
 
 local function git_diff()
-  git_on_node 'tab Git diff HEAD'
+  -- Opens the file the way Enter does, then replaces it with its diff. Space x brings the file back.
+  api.node.open.edit()
+  vim.cmd 'Git ++curwin diff HEAD -- %'
 end
 
 local function git_commit()
-  if node_path() then
-    vim.cmd 'tab Git commit -v'
-  end
+  -- From the editor window, so the message opens as a split there. :wq commits and closes it.
+  vim.cmd 'wincmd p'
+  vim.cmd 'Git commit -v'
 end
 
 local function git_log()
