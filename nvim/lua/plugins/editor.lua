@@ -9,6 +9,8 @@ vim.pack.add {
     src = 'https://github.com/lewis6991/gitsigns.nvim',
     version = vim.version.range '*',
   },
+  -- :Git runs git commands inside nvim. The last tag is from 2022, so it follows the default branch.
+  { src = 'https://github.com/tpope/vim-fugitive' },
   {
     src = 'https://github.com/nvim-mini/mini.statusline',
     version = vim.version.range '*',
@@ -68,6 +70,7 @@ gitsigns.setup {
       gitsigns.blame_line { full = true }
     end, { buffer = bufnr, desc = 'Blame line' })
     vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { buffer = bufnr, desc = 'Diff against index' })
+    vim.keymap.set('n', '<leader>hc', '<Cmd>Git commit -v<CR>', { buffer = bufnr, desc = 'Commit' })
   end,
 }
 

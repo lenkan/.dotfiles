@@ -77,20 +77,38 @@ local highlight_group = vim.api.nvim_create_augroup('user-lsp-highlight', { clea
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
   callback = function(event)
-    -- gd, and Neovim's default gri/grt, jump straight to a single result. A picker would ask you to confirm it.
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = event.buf, desc = 'LSP: Go to definition' })
-
-    -- References usually come back as a list, so a picker instead of the quickfix list. Symbols are Space fs / fS.
-    vim.keymap.set('n', 'grr', '<Cmd>Pick lsp scope="references"<CR>', { buffer = event.buf, desc = 'LSP: References' })
-    -- Like gra without ts_ls's refactors
-    local quick_fix = function()
-      vim.lsp.buf.code_action { context = { only = { 'quickfix' } } }
-    end
-    vim.keymap.set('n', 'grq', quick_fix, { buffer = event.buf, desc = 'LSP: Quick fix' })
-    vim.keymap.set('n', '<leader>pf', quick_fix, { buffer = event.buf, desc = 'LSP: Fix problem' })
-
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client:supports_method('textDocument/documentHighlight', event.buf) then
+    if not client then
+      return
+    end
+
+    -- Only for servers that support them: Copilot attaches to every buffer, the file tree too, and would
+    -- replace its keys
+    if client:supports_method('textDocument/definition', event.buf) then
+      -- gd, and Neovim's default gri/grt, jump straight to a single result. A picker would ask you to confirm it.
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = event.buf, desc = 'LSP: Go to definition' })
+    end
+
+    if client:supports_method('textDocument/references', event.buf) then
+      -- References usually come back as a list, so a picker instead of the quickfix list. Symbols are Space fs / fS.
+      vim.keymap.set(
+        'n',
+        'grr',
+        '<Cmd>Pick lsp scope="references"<CR>',
+        { buffer = event.buf, desc = 'LSP: References' }
+      )
+    end
+
+    if client:supports_method('textDocument/codeAction', event.buf) then
+      -- Like gra without ts_ls's refactors
+      local quick_fix = function()
+        vim.lsp.buf.code_action { context = { only = { 'quickfix' } } }
+      end
+      vim.keymap.set('n', 'grq', quick_fix, { buffer = event.buf, desc = 'LSP: Quick fix' })
+      vim.keymap.set('n', '<leader>pf', quick_fix, { buffer = event.buf, desc = 'LSP: Fix problem' })
+    end
+
+    if client:supports_method('textDocument/documentHighlight', event.buf) then
       vim.api.nvim_create_autocmd(
         { 'CursorHold', 'CursorHoldI' },
         { buffer = event.buf, group = highlight_group, callback = vim.lsp.buf.document_highlight }
