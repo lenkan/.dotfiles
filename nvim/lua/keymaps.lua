@@ -1,21 +1,18 @@
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+local function show_all_keymaps()
+  require('which-key').show()
+end
 
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left split' })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to lower split' })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to upper split' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right split' })
-
 vim.keymap.set('n', '<leader>/', '<C-w>v', { desc = 'Split right' })
 vim.keymap.set('n', '<leader>-', '<C-w>s', { desc = 'Split below' })
-
 vim.keymap.set({ 'n', 'x', 'o' }, 'ö', '[', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'ä', ']', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ö', '{')
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ä', '}')
 vim.keymap.set({ 'n', 'x', 'o' }, '¤', '$')
-
-vim.keymap.set('n', '<leader>?', function()
-  require('which-key').show()
-end, { desc = 'All keymaps' })
-
+vim.keymap.set('n', '<leader>?', show_all_keymaps, { desc = 'All keymaps' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })

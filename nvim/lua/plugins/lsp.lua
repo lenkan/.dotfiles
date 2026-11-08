@@ -36,20 +36,15 @@ vim.diagnostic.config {
   },
 }
 
-local function jump_to_error(count)
-  vim.diagnostic.jump { count = count, severity = vim.diagnostic.severity.ERROR }
+local function next_error()
+  vim.diagnostic.jump { count = vim.v.count1, severity = vim.diagnostic.severity.ERROR }
 end
-vim.keymap.set('n', ']e', function()
-  jump_to_error(vim.v.count1)
-end, { desc = 'Next error' })
-vim.keymap.set('n', '[e', function()
-  jump_to_error(-vim.v.count1)
-end, { desc = 'Previous error' })
 
-vim.keymap.set('n', '<leader>pp', vim.diagnostic.open_float, { desc = 'Show problem' })
-vim.keymap.set('n', '<leader>pl', '<Cmd>Pick diagnostic scope="current"<CR>', { desc = 'List problems in file' })
-vim.keymap.set('n', '<leader>pL', '<Cmd>Pick diagnostic scope="all"<CR>', { desc = 'List all problems' })
-vim.keymap.set('n', '<leader>py', function()
+local function previous_error()
+  vim.diagnostic.jump { count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR }
+end
+
+local function copy_problem_message()
   local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line '.' - 1 })
   if #diagnostics == 0 then
     return vim.notify 'No problems on this line'
@@ -57,20 +52,30 @@ vim.keymap.set('n', '<leader>py', function()
   table.sort(diagnostics, function(a, b)
     return a.severity < b.severity
   end)
-  vim.fn.setreg(
-    vim.v.register,
-    table.concat(
-      vim.tbl_map(function(d)
-        return d.message
-      end, diagnostics),
-      '\n'
-    )
-  )
-end, { desc = 'Copy problem message' })
-vim.keymap.set('n', '<leader>pv', function()
+  local messages = vim.tbl_map(function(d)
+    return d.message
+  end, diagnostics)
+  vim.fn.setreg(vim.v.register, table.concat(messages, '\n'))
+end
+
+local function toggle_virtual_lines()
   local on = not vim.diagnostic.config().virtual_lines
   vim.diagnostic.config { virtual_lines = on and { current_line = true }, virtual_text = not on }
-end, { desc = 'Toggle virtual lines' })
+end
+
+local function references()
+  vim.cmd 'Pick lsp scope="references"'
+end
+
+local function quick_fix()
+  vim.lsp.buf.code_action { context = { only = { 'quickfix' } } }
+end
+
+vim.keymap.set('n', '<leader>pp', vim.diagnostic.open_float, { desc = 'Show problem' })
+vim.keymap.set('n', '<leader>pl', '<Cmd>Pick diagnostic scope="current"<CR>', { desc = 'List problems in file' })
+vim.keymap.set('n', '<leader>pL', '<Cmd>Pick diagnostic scope="all"<CR>', { desc = 'List all problems' })
+vim.keymap.set('n', '<leader>py', copy_problem_message, { desc = 'Copy problem message' })
+vim.keymap.set('n', '<leader>pv', toggle_virtual_lines, { desc = 'Toggle virtual lines' })
 
 local highlight_group = vim.api.nvim_create_augroup('user-lsp-highlight', { clear = true })
 
@@ -85,25 +90,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Only for servers that support them: Copilot attaches to every buffer, the file tree too, and would
     -- replace its keys
     if client:supports_method('textDocument/definition', event.buf) then
-      -- gd, and Neovim's default gri/grt, jump straight to a single result. A picker would ask you to confirm it.
       vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = event.buf, desc = 'LSP: Go to definition' })
     end
 
     if client:supports_method('textDocument/references', event.buf) then
-      -- References usually come back as a list, so a picker instead of the quickfix list. Symbols are Space fs / fS.
-      vim.keymap.set(
-        'n',
-        'grr',
-        '<Cmd>Pick lsp scope="references"<CR>',
-        { buffer = event.buf, desc = 'LSP: References' }
-      )
+      vim.keymap.set('n', 'grr', references, { buffer = event.buf, desc = 'LSP: References' })
     end
 
     if client:supports_method('textDocument/codeAction', event.buf) then
-      -- Like gra without ts_ls's refactors
-      local quick_fix = function()
-        vim.lsp.buf.code_action { context = { only = { 'quickfix' } } }
-      end
       vim.keymap.set('n', 'grq', quick_fix, { buffer = event.buf, desc = 'LSP: Quick fix' })
       vim.keymap.set('n', '<leader>pf', quick_fix, { buffer = event.buf, desc = 'LSP: Fix problem' })
     end
@@ -129,39 +123,35 @@ vim.api.nvim_create_autocmd('LspDetach', {
   end,
 })
 
--- Merged over nvim-lspconfig's defaults
----@type table<string, vim.lsp.Config>
-local servers = {
-  bashls = {}, -- Uses shellcheck and shfmt from PATH
-  ts_ls = {},
-  biome = {}, -- Only attaches in projects with biome.json(c)
-  jsonls = {},
-  cssls = {},
-  html = {},
-  basedpyright = {},
-  ruff = {},
-  rust_analyzer = {},
-  stylua = {}, -- Runs `stylua --lsp`, using .stylua.toml
-
-  lua_ls = {
-    settings = {
-      Lua = {
-        -- Know Neovim's Lua API (`vim.*`)
-        runtime = { version = 'LuaJIT' },
-        workspace = { library = { vim.env.VIMRUNTIME } },
-        format = { enable = false }, -- stylua formats instead
-      },
+-- Merged over nvim-lspconfig's defaults. The other servers use those as they are.
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = {
+      -- Know Neovim's Lua API (`vim.*`)
+      runtime = { version = 'LuaJIT' },
+      workspace = { library = { vim.env.VIMRUNTIME } },
+      format = { enable = false }, -- stylua formats instead
     },
   },
-}
-
-for name, server in pairs(servers) do
-  vim.lsp.config(name, server)
-end
+})
 
 require('mason').setup {}
 -- Also enables every server installed in Mason, listed here or not
-require('mason-lspconfig').setup { ensure_installed = vim.tbl_keys(servers) }
+require('mason-lspconfig').setup {
+  ensure_installed = {
+    'bashls',
+    'ts_ls',
+    'biome',
+    'jsonls',
+    'cssls',
+    'html',
+    'basedpyright',
+    'ruff',
+    'rust_analyzer',
+    'stylua',
+    'lua_ls',
+  },
+}
 require('blink.cmp').setup {
   -- <CR> accepts the menu item; <Tab> only jumps in snippets, otherwise falls through to copilot.vim
   keymap = {

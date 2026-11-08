@@ -17,15 +17,14 @@ vim.pack.add {
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', {
-  desc = 'Toggle file tree (reveal current file)',
-})
-
 local api = require 'nvim-tree.api'
 
-vim.keymap.set('n', '<leader>fe', function()
+local function reveal_in_tree()
   api.tree.find_file { open = true, focus = true }
-end, { desc = 'Reveal file in tree' })
+end
+
+vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
+vim.keymap.set('n', '<leader>fe', reveal_in_tree, { desc = 'Reveal file in tree' })
 
 local function node_path()
   local node = api.tree.get_node_under_cursor()

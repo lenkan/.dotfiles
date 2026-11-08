@@ -9,7 +9,6 @@ vim.pack.add {
     src = 'https://github.com/lewis6991/gitsigns.nvim',
     version = vim.version.range '*',
   },
-  -- :Git runs git commands inside nvim. The last tag is from 2022, so it follows the default branch.
   { src = 'https://github.com/tpope/vim-fugitive' },
   {
     src = 'https://github.com/nvim-mini/mini.statusline',
@@ -49,26 +48,35 @@ require('which-key').setup {
 }
 
 local gitsigns = require 'gitsigns'
+
+local function next_hunk()
+  gitsigns.nav_hunk 'next'
+end
+
+local function previous_hunk()
+  gitsigns.nav_hunk 'prev'
+end
+
+local function reset_selected_lines()
+  gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+end
+
+local function blame_line()
+  gitsigns.blame_line { full = true }
+end
+
 gitsigns.setup {
   on_attach = function(bufnr)
-    vim.keymap.set('n', ']h', function()
-      gitsigns.nav_hunk 'next'
-    end, { buffer = bufnr, desc = 'Next git hunk' })
-    vim.keymap.set('n', '[h', function()
-      gitsigns.nav_hunk 'prev'
-    end, { buffer = bufnr, desc = 'Previous git hunk' })
+    vim.keymap.set('n', ']h', next_hunk, { buffer = bufnr, desc = 'Next git hunk' })
+    vim.keymap.set('n', '[h', previous_hunk, { buffer = bufnr, desc = 'Previous git hunk' })
 
     vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { buffer = bufnr, desc = 'Preview hunk' })
     vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { buffer = bufnr, desc = 'Reset hunk' })
-    vim.keymap.set('v', '<leader>hr', function()
-      gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-    end, { buffer = bufnr, desc = 'Reset selected lines' })
+    vim.keymap.set('v', '<leader>hr', reset_selected_lines, { buffer = bufnr, desc = 'Reset selected lines' })
     vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, { buffer = bufnr, desc = 'Stage hunk' })
     vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer, { buffer = bufnr, desc = 'Stage file' })
     vim.keymap.set('n', '<leader>hU', gitsigns.reset_buffer_index, { buffer = bufnr, desc = 'Unstage file' })
-    vim.keymap.set('n', '<leader>hb', function()
-      gitsigns.blame_line { full = true }
-    end, { buffer = bufnr, desc = 'Blame line' })
+    vim.keymap.set('n', '<leader>hb', blame_line, { buffer = bufnr, desc = 'Blame line' })
     vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { buffer = bufnr, desc = 'Diff against index' })
     vim.keymap.set('n', '<leader>hc', '<Cmd>Git commit -v<CR>', { buffer = bufnr, desc = 'Commit' })
   end,
