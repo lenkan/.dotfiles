@@ -2,6 +2,17 @@ local function show_all_keymaps()
   require('which-key').show()
 end
 
+-- Maximizes the current window; again restores the previous sizes
+local function toggle_zoom()
+  if vim.t.zoom_restore then
+    vim.cmd(vim.t.zoom_restore)
+    vim.t.zoom_restore = nil
+  else
+    vim.t.zoom_restore = vim.fn.winrestcmd()
+    vim.cmd 'wincmd _ | wincmd |'
+  end
+end
+
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left split' })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to lower split' })
@@ -9,6 +20,7 @@ vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to upper split' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right split' })
 vim.keymap.set('n', '<leader>/', '<C-w>v', { desc = 'Split right' })
 vim.keymap.set('n', '<leader>-', '<C-w>s', { desc = 'Split below' })
+vim.keymap.set('n', '<leader>z', toggle_zoom, { desc = 'Zoom window (toggle)' })
 vim.keymap.set({ 'n', 'x', 'o' }, 'ö', '[', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'ä', ']', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ö', '{')
