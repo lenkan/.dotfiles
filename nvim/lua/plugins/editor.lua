@@ -15,10 +15,6 @@ vim.pack.add {
     version = vim.version.range '*',
   },
   {
-    src = 'https://github.com/nvim-mini/mini.bufremove',
-    version = vim.version.range '*',
-  },
-  {
     src = 'https://github.com/github/copilot.vim',
     version = vim.version.range '*',
   },
@@ -87,17 +83,6 @@ gitsigns.setup {
 }
 
 require('mini.statusline').setup {}
-
-local function close_buffer()
-  if vim.bo.filetype == 'NvimTree' then
-    return vim.cmd 'NvimTreeClose'
-  end
-
-  require('mini.bufremove').delete()
-end
-
-vim.keymap.set('n', '<leader>x', close_buffer, { desc = 'Close buffer' })
-vim.keymap.set('n', '<leader>q', close_buffer, { desc = 'Close buffer' })
 
 local function treesitter_start(buf, language)
   if not vim.api.nvim_buf_is_valid(buf) or not vim.treesitter.language.add(language) then
