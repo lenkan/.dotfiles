@@ -62,6 +62,7 @@ link_into "$HOME/.local/bin" "$DIR"/bin/*
 # Ghostty reads ~/.config/ghostty on macOS too
 link_into "$config" "$DIR"/nvim "$DIR"/ghostty
 link_into "$config/opencode" "$DIR"/opencode/cli.json
+link_into "$config/opencode/agents" "$DIR"/opencode/agents/*
 link_into "$config/opencode/commands" "$DIR"/opencode/commands/*
 link_into "$config/opencode/skills" "$DIR"/opencode/skills/*
 

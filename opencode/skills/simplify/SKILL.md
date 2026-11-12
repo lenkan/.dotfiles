@@ -1,67 +1,65 @@
 ---
 name: Simplify
-description: Review recently changed code for cleanup opportunities (reuse, simplicity, efficiency, abstraction level) and apply the fixes. Use after implementing a feature or fixing a bug, before opening a PR. Does not look for correctness bugs.
+description: Clean up a diff before it ships. Reverts unnecessary changes, removes needless complexity, reuses existing helpers and test utilities, and matches the conventions of neighbouring files (naming, structure, how tests and mocks are written). Applies the fixes. Use after implementing a change, before committing or opening a PR. Does not look for correctness bugs; use code-review for that.
 ---
 
-## Purpose
+# Simplify
 
-Port of Claude Code's bundled `/simplify` skill. Reviews the current diff (or a
-specific target) for cleanup opportunities and applies the fixes directly. This
-is a post-implementation cleanup pass, not a correctness review — use a
-separate code-review pass for bugs.
+Clean up a finished change: remove what it doesn't need and make it fit the codebase. Do this yourself in this session, without subagents. It's not a bug hunt. Mention any correctness problems you notice, but don't fix them.
+
+Arguments: an optional target (path, commit range, branch or PR number) and/or a focus, such as "tests only".
 
 ## Scope
 
-- Default target: the working diff, i.e. uncommitted changes plus commits made
-  during this session that aren't on the base branch yet. Use `git status`,
-  `git diff`, and `git log` to establish the diff range.
-- If the user passes a target (a file path, directory, PR reference, or branch
-  name), review only that target instead of the working diff.
-- If the user adds a focus area (e.g. "focus on memory efficiency" or "focus on
-  performance"), bias all four passes toward that concern but still run them
-  all.
+- Default: the diff against the merge-base with the branch this will merge into (usually `origin/main`; on the default branch, its upstream), plus untracked files that belong to the change. Leave unrelated untracked files alone.
+- Path target: the same, limited to that path. Range: that range.
+- Branch or PR target: this skill edits, so it has to be checked out. Ask before switching (`gh pr checkout <n>`).
+- If there's nothing to review, say so and stop.
 
-## Workflow
+Know what the change is for. Get that from this conversation, the PR or the commit messages, and ask if it's unclear. Read each changed file in full, plus any `AGENTS.md`, `CLAUDE.md` or `CONTRIBUTING.md` at the root and near the changes.
 
-1. Determine the diff to review:
-   - `git status --short` and `git diff` (plus `git diff --staged`) for
-     uncommitted changes.
-   - If there are session commits not yet merged/pushed, include them via
-     `git diff <merge-base>...HEAD` or `git log` as appropriate.
-   - If a target was given, scope the diff/review to it instead.
-2. Read every changed file in full (not just the diff hunks) to get enough
-   context to judge abstraction level and reuse opportunities.
-3. Run four review passes over the changed code. These can be done
-   sequentially in one pass of reasoning, or dispatched as parallel subagents
-   for a large diff — pick whichever is faster for the size of the change:
-   - **Reuse**: Does this duplicate logic that already exists elsewhere in the
-     codebase (a helper, utility, pattern, or component)? Should it call or be
-     extracted into a shared helper instead?
-   - **Simplification**: Is there redundant logic, unnecessary indirection,
-     overly clever code, or dead code that can be removed or flattened?
-   - **Efficiency**: Are there redundant operations, unnecessary allocations,
-     repeated computation, or obviously suboptimal algorithms introduced by
-     this change?
-   - **Abstraction level**: Is the change at the right level of abstraction —
-     not over-engineered with unneeded flexibility, and not under-abstracted
-     in a way that leaks implementation details or duplicates concerns?
-4. Collect findings from all four passes. Discard anything that is actually a
-   correctness bug (point the user to a code-review pass for those instead of
-   silently dropping them) and anything that would change the diff's intended
-   behavior.
-5. Apply the fixes directly with the edit tool, matching existing code style
-   and conventions. Prefer small, targeted edits over broad rewrites.
-6. Re-read the edited sections to confirm the fixes are coherent and didn't
-   introduce new duplication or break callers.
-7. Summarize what was changed and why, grouped by the four categories above.
-   Call out any findings you intentionally did not fix (e.g. because they'd
-   require a larger refactor) so the user can decide.
+## Look for
 
-## Notes
+1. **Unneeded changes.** Every hunk should serve the intent. Look for:
+   - drive-by refactors, renames, reformatting or import churn
+   - debug output, commented-out code, unused imports, variables or parameters
+   - speculative options or abstractions, and checks for states that can't happen
+   - comments that narrate the code or describe the change
+   - dependency or config changes the intent doesn't need
+2. **Needless complexity.** Look for:
+   - logic that can be stated more directly
+   - wrappers, single-use helpers or types that add nothing
+   - near-duplicate blocks
+   - a fix made in the wrong layer
+   - repeated work
 
-- This skill edits code. Don't ask for confirmation before each individual
-  cleanup edit, but do summarize the full set of changes at the end.
-- If the repo has a `CLAUDE.md`, `AGENTS.md`, or similar conventions doc, read
-  it first and align suggestions with those standards.
-- If nothing in the diff warrants a change, say so plainly instead of
-  inventing busywork edits.
+   Prefer the change that deletes code.
+3. **Reuse.** Search the codebase for things the change re-implements:
+   - helpers, utilities, constants and types
+   - test support: fixtures, factories, mock helpers, shared setup
+   - the standard library and existing dependencies
+4. **Conventions.** Open two or three neighbouring files that do the same job: sibling modules for source, sibling tests for tests. Match what they do:
+   - naming, file location and layout, error handling
+   - in tests: how mocks are set up and reset, fixtures, test names and assertion style
+
+   Follow a pattern only when the neighbours agree. One neighbour is enough if it's the only one of its kind. Convention docs override neighbours.
+
+Only judge what the diff adds or touches. Skip anything a formatter or linter enforces, and taste that has no precedent in the codebase.
+
+## Fix
+
+- Apply cleanups that keep behaviour the same directly. Use the smallest edit and match the surrounding style. To revert an unneeded hunk, restore the base version of those lines.
+- Before anything that changes behaviour or might be deliberate, ask once (a multi-select question). That covers an unrelated fix, a speculative feature, or deleting an untracked file.
+- Leave refactors that go beyond the diff alone, and mention them.
+- Re-read what you changed, including every use of anything you renamed.
+- Run the project's fast checks for the touched files: typecheck, lint and tests. Find them in `package.json`, a Makefile, `scripts/`, CI config or `AGENTS.md`.
+
+## Report
+
+Keep it short:
+- what you changed and why, by check, with `path:line`
+- what you asked about and the answer
+- the checks you ran
+- any correctness concerns, for `code-review`
+
+If nothing needed changing, say so in one line.
