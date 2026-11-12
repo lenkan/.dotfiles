@@ -5,13 +5,8 @@ alias ..="cd .."
 # WSL clock drifts after the host sleeps; resync from the hardware clock.
 alias updatetime="sudo hwclock -s"
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-	if test -r ~/.dircolors; then
-		eval "$(dircolors -b ~/.dircolors)"
-	else
-		eval "$(dircolors -b)"
-	fi
+# dircolors means GNU coreutils, whose ls supports --color
+if command -v dircolors >/dev/null; then
 	alias ls='ls --color=auto'
 	alias grep='grep --color=auto'
 	alias fgrep='fgrep --color=auto'
@@ -25,6 +20,8 @@ alias gc='git checkout'
 alias gd='git difftool -d'
 alias n='npm run'
 alias nn='npm run'
+alias p='pnpm'
+alias pi='pnpm install'
 alias pp='pnpm run'
 alias k='kubectl'
 alias kk='kubectl'
@@ -51,6 +48,3 @@ unset_dotenv() {
 	# shellcheck disable=SC2046
 	unset $(grep -v '^#' "$file" | sed -E 's/(.*)=.*/\1/' | xargs)
 }
-
-# Options
-set -o vi
