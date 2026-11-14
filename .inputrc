@@ -1,8 +1,21 @@
+# First: it switches the keymap, so bindings above it would land in the unused emacs keymap
+set editing-mode vi
+
 TAB: menu-complete
 "\e[A":history-search-backward
 "\e[B":history-search-forward
+"\C-x\C-e": edit-and-execute-command
 
 set bell-style none
 set show-all-if-ambiguous on
 set menu-complete-display-prefix on
-set editing-mode vi
+
+# Cursor shows the vi mode: bar in insert, block in normal
+set show-mode-in-prompt on
+set vi-ins-mode-string "\1\e[6 q\2"
+set vi-cmd-mode-string "\1\e[2 q\2"
+
+set keymap vi-command
+# Bindings for vi command mode, skips "v"
+"v": abort
+"\C-x\C-e": edit-and-execute-command
