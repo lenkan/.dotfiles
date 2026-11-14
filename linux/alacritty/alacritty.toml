@@ -4,7 +4,7 @@ args = ["new-session", "-A", "-s", "main"]
 
 [font]
 size = 10
-# Source Code Pro with Nerd Font icons (install-nerd-font.sh);
+# Source Code Pro with Nerd Font icons (install-nerd-font.sh)
 normal = { family = "SauceCodePro Nerd Font", style = "Medium" }
 
 [colors.primary]
