@@ -1,15 +1,12 @@
-# Splits, tabs, zoom and copy mode come from tmux (see .tmux.conf).
-# Each window attaches to the "main" session, so closing the window doesn't lose it.
 [terminal.shell]
 program = "tmux"
 args = ["new-session", "-A", "-s", "main"]
 
 [font]
 size = 10
-# Source Code Pro with Nerd Font icons (install-nerd-font.sh); Ghostty has the icons built in
+# Source Code Pro with Nerd Font icons (install-nerd-font.sh);
 normal = { family = "SauceCodePro Nerd Font", style = "Medium" }
 
-# Ghostty's default colors (ghostty +show-config --default)
 [colors.primary]
 background = "#282c34"
 foreground = "#ffffff"
@@ -37,9 +34,9 @@ white = "#eaeaea"
 [cursor]
 style = { shape = "Block", blinking = "Never" }
 
-# Alacritty sends a plain Enter for these; tmux passes the CSI u form on to programs that ask for it
 [keyboard]
 bindings = [
 	{ key = "Enter", mods = "Shift", chars = "\u001b[13;2u" },
 	{ key = "Enter", mods = "Control", chars = "\u001b[13;5u" },
+	{ key = "V", mods = "Alt", action = "Paste" },
 ]
