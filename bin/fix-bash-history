@@ -1,0 +1,29 @@
+#!/bin/bash
+# One-off: timestamp the old lines of a history file. Bash only rebuilds
+# lithist's multi-line entries if the file's first line is a timestamp.
+# Close or re-source other shells first: old ones write lines without timestamps.
+set -euo pipefail
+
+h="${1:-$HOME/.bash_history}"
+
+if [ ! -s "$h" ]; then
+	echo "$h is empty or missing, nothing to do."
+	exit 0
+fi
+
+n=$(grep -n -m1 '^#[0-9]\{9,\}$' "$h" | cut -d: -f1 || true)
+if [ "$n" = 1 ]; then
+	echo "$h already starts with a timestamp, nothing to do."
+	exit 0
+elif [ -z "$n" ]; then
+	n=$(($(wc -l <"$h") + 1))
+	first=$(date +%s)
+else
+	first=$(sed -n "${n}p" "$h" | tr -d '#')
+fi
+
+backup="$h.bak-$(date +%Y%m%d%H%M%S)"
+cp -p "$h" "$backup"
+awk -v n="$n" -v first="$first" 'NR < n { print "#" (first - n + NR) } { print }' "$backup" >"$h"
+
+echo "Timestamped $((n - 1)) old lines in $h (backup: $backup)."

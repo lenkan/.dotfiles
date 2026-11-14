@@ -25,6 +25,7 @@ alias pi='pnpm install'
 alias pp='pnpm run'
 alias k='kubectl'
 alias kk='kubectl'
+alias hr='history -c; history -r; echo "History reloaded"'
 
 # Dotenv
 dotenv() {

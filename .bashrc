@@ -14,9 +14,11 @@ esac
 HISTCONTROL=ignoreboth
 HISTSIZE=100000
 HISTFILESIZE=100000
-# Share history between open terminals: save, then reload, before each prompt
-PROMPT_COMMAND="history -a; history -c; history -r"
+# lithist needs timestamps in HISTFILE, or multi-line entries split when it's read
+HISTTIMEFORMAT="%F %T "
+PROMPT_COMMAND="history -a"
 shopt -s histappend
+shopt -s lithist
 shopt -s checkwinsize
 shopt -s globstar
 set -o vi
