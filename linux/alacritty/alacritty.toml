@@ -39,4 +39,6 @@ bindings = [
 	{ key = "Enter", mods = "Shift", chars = "\u001b[13;2u" },
 	{ key = "Enter", mods = "Control", chars = "\u001b[13;5u" },
 	{ key = "V", mods = "Alt", action = "Paste" },
+	{ key = "+", mods = "Alt", action = "IncreaseFontSize" },
+	{ key = "-", mods = "Alt", action = "DecreaseFontSize" }
 ]
