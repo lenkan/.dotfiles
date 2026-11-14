@@ -109,5 +109,4 @@ function prompt_command() {
 	echo -ne "\007"
 }
 
-# Append: .bashrc already put the history sync in PROMPT_COMMAND
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }prompt_command"
