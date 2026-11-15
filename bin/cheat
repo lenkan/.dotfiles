@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+exec nvim -R '+nnoremap <buffer> q <Cmd>q<CR>' "$HOME/.dotfiles/cheatsheet.md"
