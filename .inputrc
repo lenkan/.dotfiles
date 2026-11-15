@@ -19,3 +19,5 @@ set keymap vi-command
 # Bindings for vi command mode, skips "v"
 "v": abort
 "\C-x\C-e": edit-and-execute-command
+# Bracketed paste is only bound in insert mode; without this, pasting in normal mode garbles the text
+"\e[200~": bracketed-paste-begin
