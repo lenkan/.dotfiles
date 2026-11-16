@@ -1,5 +1,5 @@
 vim.pack.add {
-  -- File tree sidebar
+  -- File tree sidebar, for reviewing changes (G shows only changed files). files.lua is the everyday explorer.
   {
     src = 'https://github.com/nvim-tree/nvim-tree.lua',
     version = vim.version.range '*',
@@ -13,17 +13,13 @@ vim.pack.add {
   },
 }
 
--- Per nvim-tree's docs; `nvim .` then opens the tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
 local api = require 'nvim-tree.api'
 
 local function reveal_in_tree()
   api.tree.find_file { open = true, focus = true }
 end
 
-vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
+vim.keymap.set('n', '|', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
 vim.keymap.set('n', '<leader>fe', reveal_in_tree, { desc = 'Reveal file in tree' })
 
 local function node_path()
@@ -86,6 +82,8 @@ vim.api.nvim_create_autocmd('User', {
 require('nvim-tree').setup {
   -- Dotfiles are shown and gitignored files hidden by default
   filters = { custom = { '^.git$' } },
+  -- mini.files opens directories (`nvim .`)
+  hijack_directories = { enable = false },
   view = { width = 40 },
   on_attach = function(bufnr)
     api.map.on_attach.default(bufnr)
