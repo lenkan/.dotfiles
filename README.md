@@ -9,8 +9,6 @@ git clone https://github.com/lenkan/.dotfiles ~/.dotfiles
 ~/.dotfiles/linux/bootstrap.sh  # or macos/bootstrap.sh, wsl/bootstrap.sh
 ```
 
-On Linux and WSL, optional installers from `linux/bin/` are on `PATH`, e.g. `install-ghostty.sh`.
-
 ### WSL
 
 Create the distro first. The password can be anything (bootstrap removes it).

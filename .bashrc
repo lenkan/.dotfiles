@@ -74,8 +74,7 @@ if [ -d "$HOME/.opencode" ]; then
 	PATH="$HOME/.opencode/bin:$PATH"
 fi
 
-# pnpm comes from corepack via fnm, so check the command, not PNPM_HOME
-if command -v pnpm >/dev/null; then
+if [ -d "$HOME/.local/share/pnpm" ]; then
 	export PNPM_HOME="$HOME/.local/share/pnpm"
 	PATH="$PNPM_HOME/bin:$PATH"
 fi

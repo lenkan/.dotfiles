@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-curl -fsSL https://get.docker.com | sh
+curl --proto '=https' --tlsv1.2 -fsSL https://get.docker.com | sh
 
 sudo usermod -aG docker "$USER"
 

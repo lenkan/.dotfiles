@@ -16,7 +16,7 @@ sdk_dir="$install_dir/google-cloud-sdk"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
-curl -fsSL -o "$tmp/gcloud.tar.gz" \
+curl --proto '=https' --tlsv1.2 -fsSL -o "$tmp/gcloud.tar.gz" \
 	"https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-$arch.tar.gz"
 
 mkdir -p "$install_dir"

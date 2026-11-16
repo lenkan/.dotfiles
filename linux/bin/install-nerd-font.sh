@@ -21,6 +21,6 @@ fi
 
 dest="$HOME/.local/share/fonts/SauceCodeProNerdFont"
 mkdir -p "$dest"
-curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/SourceCodePro.tar.xz | tar -xJ -C "$dest"
+curl --proto '=https' --tlsv1.2 -fsSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/SourceCodePro.tar.xz | tar -xJ -C "$dest"
 fc-cache -f "$dest"
 echo "Installed $family."

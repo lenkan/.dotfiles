@@ -35,7 +35,7 @@ add_apt_repo() {
 
 	sudo install -d -m 0755 /etc/apt/keyrings
 	if [ ! -f "$keyring" ]; then
-		curl -fsSL "$key_url" | sudo gpg --dearmor -o "$keyring"
+		curl --proto '=https' --tlsv1.2 -fsSL "$key_url" | sudo gpg --dearmor -o "$keyring"
 		sudo chmod go+r "$keyring"
 	fi
 
