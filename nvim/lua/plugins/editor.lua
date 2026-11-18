@@ -26,9 +26,10 @@ vim.pack.add {
 
 vim.cmd.colorscheme 'vscode'
 
-require('mini.icons').setup()
+local icons = require 'mini.icons'
+icons.setup()
 -- nvim-tree looks for nvim-web-devicons; this serves it mini.icons instead
-MiniIcons.mock_nvim_web_devicons()
+icons.mock_nvim_web_devicons()
 
 require('guess-indent').setup {}
 
