@@ -24,8 +24,7 @@ vim.api.nvim_create_autocmd('PackChanged', {
 
 require 'plugins.editor'
 require 'plugins.picker'
-require 'plugins.files'
-require 'plugins.tree'
+require 'plugins.explorer'
 require 'plugins.lsp'
 require 'plugins.format'
 require 'plugins.database'

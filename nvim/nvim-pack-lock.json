@@ -34,11 +34,6 @@
       "src": "https://github.com/nvim-mini/mini.extra",
       "version": ">=0.0.0"
     },
-    "mini.files": {
-      "rev": "a5689dae6b732955e33eec225b798d6815063179",
-      "src": "https://github.com/nvim-mini/mini.files",
-      "version": ">=0.0.0"
-    },
     "mini.icons": {
       "rev": "f916635dc5ae2f479fbb9ab8184bb9444b62e86c",
       "src": "https://github.com/nvim-mini/mini.icons",

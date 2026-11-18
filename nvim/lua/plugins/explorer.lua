@@ -1,5 +1,5 @@
 vim.pack.add {
-  -- File tree sidebar, for reviewing changes (G shows only changed files). files.lua is the everyday explorer.
+  -- File tree
   {
     src = 'https://github.com/nvim-tree/nvim-tree.lua',
     version = vim.version.range '*',
@@ -13,13 +13,17 @@ vim.pack.add {
   },
 }
 
+-- Per nvim-tree's docs; `nvim .` then opens the tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local api = require 'nvim-tree.api'
 
 local function reveal_in_tree()
   api.tree.find_file { open = true, focus = true }
 end
 
-vim.keymap.set('n', '|', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
+vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
 vim.keymap.set('n', '<leader>fe', reveal_in_tree, { desc = 'Reveal file in tree' })
 
 local function node_path()
@@ -64,10 +68,17 @@ local function git_log()
   end
 end
 
-local wide = false
-local function toggle_wide_mode()
-  wide = not wide
-  api.tree.resize { absolute = wide and 80 or 40 }
+local function centered_float()
+  local width = math.floor(vim.o.columns * 0.5)
+  local height = math.floor(vim.o.lines * 0.8)
+  return {
+    relative = 'editor',
+    border = 'rounded',
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+  }
 end
 
 vim.api.nvim_create_autocmd('User', {
@@ -82,13 +93,12 @@ vim.api.nvim_create_autocmd('User', {
 require('nvim-tree').setup {
   -- Dotfiles are shown and gitignored files hidden by default
   filters = { custom = { '^.git$' } },
-  -- mini.files opens directories (`nvim .`)
-  hijack_directories = { enable = false },
-  view = { width = 40 },
+  -- A popup instead of a sidebar split, so it stays out of the way of tmux panes. It closes when it loses focus.
+  view = { float = { enable = true, open_win_config = centered_float } },
+  actions = { open_file = { quit_on_open = true } },
   on_attach = function(bufnr)
     api.map.on_attach.default(bufnr)
 
-    vim.keymap.set('n', 'w', toggle_wide_mode, { buffer = bufnr, nowait = true, desc = 'nvim-tree: Toggle Wide Mode' })
     vim.keymap.set('n', 'ga', git_add, { buffer = bufnr, desc = 'nvim-tree: Git Stage' })
     vim.keymap.set('n', 'gu', git_restore, { buffer = bufnr, desc = 'nvim-tree: Git Unstage' })
     vim.keymap.set('n', 'gd', git_diff, { buffer = bufnr, desc = 'nvim-tree: Git Diff' })
