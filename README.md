@@ -42,7 +42,15 @@ These optional files live outside the repo and override the shared config:
 ## Neovim
 
 Needs Neovim 0.12+, ripgrep, gcc, tree-sitter-cli and Node 22+ (Copilot).
-Plugins and language servers install on first start; run `:Copilot setup` once.
+Plugins and language servers install on first start; run `:LspCopilotSignIn` once.
+
+For GitHub Enterprise (ghe.com), add this to `~/.nvim.local.lua` before signing in:
+
+```lua
+vim.lsp.config('copilot', {
+  settings = { ['github-enterprise'] = { uri = 'https://YOUR-ORG.ghe.com' } },
+})
+```
 
 ## Other
 

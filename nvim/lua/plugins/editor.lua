@@ -15,10 +15,6 @@ vim.pack.add {
     version = vim.version.range '*',
   },
   {
-    src = 'https://github.com/github/copilot.vim',
-    version = vim.version.range '*',
-  },
-  {
     src = 'https://github.com/folke/which-key.nvim',
     version = vim.version.range '*',
   },
@@ -29,9 +25,6 @@ vim.pack.add {
 }
 
 vim.cmd.colorscheme 'vscode'
-
--- copilot.vim is off in commit messages by default
-vim.g.copilot_filetypes = { gitcommit = true }
 
 require('mini.icons').setup()
 -- nvim-tree looks for nvim-web-devicons; this serves it mini.icons instead

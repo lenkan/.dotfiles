@@ -36,14 +36,6 @@ vim.diagnostic.config {
   },
 }
 
-local function next_error()
-  vim.diagnostic.jump { count = vim.v.count1, severity = vim.diagnostic.severity.ERROR }
-end
-
-local function previous_error()
-  vim.diagnostic.jump { count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR }
-end
-
 local function copy_problem_message()
   local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line '.' - 1 })
   if #diagnostics == 0 then
@@ -150,10 +142,22 @@ require('mason-lspconfig').setup {
     'rust_analyzer',
     'stylua',
     'lua_ls',
+    'copilot',
   },
 }
+
+vim.lsp.inline_completion.enable()
+
+local function accept_inline_completion()
+  if not vim.lsp.inline_completion.get() then
+    return '<Tab>'
+  end
+end
+
+vim.keymap.set('i', '<Tab>', accept_inline_completion, { expr = true, desc = 'Accept inline completion' })
+
 require('blink.cmp').setup {
-  -- <CR> accepts the menu item; <Tab> only jumps in snippets, otherwise falls through to copilot.vim
+  -- <CR> accepts the menu item; <Tab> only jumps in snippets, otherwise falls through to the inline completion
   keymap = {
     preset = 'enter',
     -- Stands in for <C-space>, which never arrives inside tmux since it is the tmux prefix
