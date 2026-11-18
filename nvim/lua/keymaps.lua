@@ -26,7 +26,6 @@ vim.keymap.set({ 'n', 'x', 'o' }, 'ö', '[', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'ä', ']', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ö', '{')
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ä', '}')
-vim.keymap.set({ 'n', 'x', 'o' }, '¤', '$')
 vim.keymap.set('n', '<leader>?', show_all_keymaps, { desc = 'All keymaps' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 

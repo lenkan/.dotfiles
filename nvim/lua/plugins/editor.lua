@@ -43,11 +43,19 @@ require('which-key').setup {
 local gitsigns = require 'gitsigns'
 
 local function next_hunk()
-  gitsigns.nav_hunk 'next'
+  if vim.wo.diff then
+    vim.cmd.normal { ']c', bang = true }
+  else
+    gitsigns.nav_hunk 'next'
+  end
 end
 
 local function previous_hunk()
-  gitsigns.nav_hunk 'prev'
+  if vim.wo.diff then
+    vim.cmd.normal { '[c', bang = true }
+  else
+    gitsigns.nav_hunk 'prev'
+  end
 end
 
 local function reset_selected_lines()
@@ -60,8 +68,8 @@ end
 
 gitsigns.setup {
   on_attach = function(bufnr)
-    vim.keymap.set('n', ']h', next_hunk, { buffer = bufnr, desc = 'Next git hunk' })
-    vim.keymap.set('n', '[h', previous_hunk, { buffer = bufnr, desc = 'Previous git hunk' })
+    vim.keymap.set('n', ']c', next_hunk, { buffer = bufnr, desc = 'Next git hunk' })
+    vim.keymap.set('n', '[c', previous_hunk, { buffer = bufnr, desc = 'Previous git hunk' })
 
     vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { buffer = bufnr, desc = 'Preview hunk' })
     vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { buffer = bufnr, desc = 'Reset hunk' })

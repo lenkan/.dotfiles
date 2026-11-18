@@ -59,11 +59,6 @@ local function references()
   vim.cmd 'Pick lsp scope="references"'
 end
 
-local function quick_fix()
-  vim.lsp.buf.code_action { context = { only = { 'quickfix' } } }
-end
-
-vim.keymap.set('n', '<leader>pp', vim.diagnostic.open_float, { desc = 'Show problem' })
 vim.keymap.set('n', '<leader>pl', '<Cmd>Pick diagnostic scope="current"<CR>', { desc = 'List problems in file' })
 vim.keymap.set('n', '<leader>pL', '<Cmd>Pick diagnostic scope="all"<CR>', { desc = 'List all problems' })
 vim.keymap.set('n', '<leader>py', copy_problem_message, { desc = 'Copy problem message' })
@@ -87,11 +82,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     if client:supports_method('textDocument/references', event.buf) then
       vim.keymap.set('n', 'grr', references, { buffer = event.buf, desc = 'LSP: References' })
-    end
-
-    if client:supports_method('textDocument/codeAction', event.buf) then
-      vim.keymap.set('n', 'grq', quick_fix, { buffer = event.buf, desc = 'LSP: Quick fix' })
-      vim.keymap.set('n', '<leader>pf', quick_fix, { buffer = event.buf, desc = 'LSP: Fix problem' })
     end
 
     if client:supports_method('textDocument/documentHighlight', event.buf) then
