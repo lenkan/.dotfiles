@@ -1,4 +1,4 @@
-# Bash cheat sheet (q to close)
+# Cheat sheet (q to close)
 
 Open: prefix h in tmux, or `cheat`.
 
@@ -41,3 +41,23 @@ Same regex as rg in both:
 'console\.log\((.*)\)' 'logger.debug(${1})'   groups
 '\bold\b'                                      whole word
 -F                                             no regex, match the text as is
+
+## Neovim picker (Space ff files, Space fg grep)
+
+Tab               show / hide preview
+Ctrl+F Ctrl+B     scroll preview forward / back a page
+Ctrl+N Ctrl+P     next / previous result
+Ctrl+V Ctrl+S     open in vertical / horizontal split
+Ctrl+X Ctrl+A     mark one / all, then Alt+Enter sends them to quickfix (]q [q, :cdo s/a/b/)
+Ctrl+O            grep only: limit to a glob (*.ts, !*.test.ts)
+Ctrl+E            grep only: switch fixed text / regex / case-sensitive
+
+lsp lua           both words, in that order with anything between
+'text             exact, no gaps
+^text  text$      at the start / at the end (.lua$)
+
+:Pick resume                       reopen the last picker as you left it
+:Pick oldfiles                     recent files
+:Pick keymaps                      find a mapping you forgot
+:Pick git_files scope='modified'   changed files only
+:Pick git_hunks                    every change, with its diff
