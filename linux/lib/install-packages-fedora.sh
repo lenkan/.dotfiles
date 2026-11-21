@@ -12,7 +12,9 @@ sudo dnf install -y \
 	curl \
 	diffutils \
 	findutils \
+	fzf \
 	gh \
+	git-delta \
 	git \
 	glibc-langpack-en \
 	gnupg2 \

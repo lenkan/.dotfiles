@@ -23,7 +23,9 @@ sudo apt-get update
 sudo apt-get install -y \
 	bat \
 	bubblewrap \
+	fzf \
 	gh \
+	git-delta \
 	git \
 	httpie \
 	jq \

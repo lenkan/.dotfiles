@@ -122,5 +122,7 @@ _cached_eval pnpm completion bash
 _cached_eval npm completion
 _cached_eval node --completion-bash
 _cached_eval uv generate-shell-completion bash
+_cached_eval fzf --bash
+
 # Keep last: the first prompt is red if .bashrc ends on a failed command
 complete -F _complete_alias "${!BASH_ALIASES[@]}"
