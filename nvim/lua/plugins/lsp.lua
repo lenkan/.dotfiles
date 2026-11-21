@@ -130,6 +130,7 @@ require('mason-lspconfig').setup {
     'basedpyright',
     'ruff',
     'rust_analyzer',
+    'gopls',
     'stylua',
     'lua_ls',
     'copilot',

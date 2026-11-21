@@ -68,6 +68,7 @@ fi
 
 if [ -d /usr/local/go ]; then
 	PATH="/usr/local/go/bin:$PATH"
+	export GOTOOLCHAIN=auto
 fi
 
 if [ -d "$HOME/.opencode" ]; then
