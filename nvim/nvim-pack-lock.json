@@ -33,11 +33,6 @@
       "src": "https://github.com/mason-org/mason.nvim",
       "version": ">=0.0.0"
     },
-    "mini.icons": {
-      "rev": "f916635dc5ae2f479fbb9ab8184bb9444b62e86c",
-      "src": "https://github.com/nvim-mini/mini.icons",
-      "version": ">=0.0.0"
-    },
     "mini.statusline": {
       "rev": "d7133a9a244a8d93ccee42ff37fb9499af5956fb",
       "src": "https://github.com/nvim-mini/mini.statusline",
@@ -57,6 +52,10 @@
       "rev": "ca581c3436fc2b236847f5b739ebc263739e5ca6",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
+    },
+    "nvim-web-devicons": {
+      "rev": "0dc0cfb0c6858041174a53c7aa4adaf65e994b3c",
+      "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "vim-dadbod": {
       "rev": "6d1d41da4873a445c5605f2005ad2c68c99d8770",
