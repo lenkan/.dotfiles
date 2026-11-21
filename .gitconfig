@@ -8,6 +8,17 @@
 	lg = !"git lg1"
 [init]
 	defaultBranch = main
+[core]
+	pager = command -v delta >/dev/null && exec delta || exec less
+[interactive]
+	diffFilter = command -v delta >/dev/null && exec delta --color-only || exec cat
+[delta]
+	navigate = true
+	keep-plus-minus-markers = true
+	plus-style = syntax "#0b3a5c"
+	plus-emph-style = syntax "#1d5f8a"
+	minus-style = syntax "#5c3a0b"
+	minus-emph-style = syntax "#8a5a1d"
 [diff]
 	tool = nvim_difftool
 [difftool]

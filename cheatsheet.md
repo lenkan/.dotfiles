@@ -26,6 +26,7 @@ fc -l             recent commands, numbered
 ## Git
 
 git add -p          add hunk by hunk (y / n)
+gd                  every changed file as a diff in nvim (git difftool -d)
 
 ## Search and replace
 
