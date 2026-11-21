@@ -25,6 +25,7 @@ end
 function M.setup()
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_execute_on_save = 0
+  -- Vim's SQL plugin maps Ctrl-C a, Ctrl-C k and more in insert mode, so Ctrl-C lags when leaving insert mode
   vim.g.omni_sql_no_default_maps = 1
   vim.g.db_ui_disable_mappings_sql = 1
 
