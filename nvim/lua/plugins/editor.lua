@@ -9,7 +9,6 @@ vim.pack.add {
     src = 'https://github.com/lewis6991/gitsigns.nvim',
     version = vim.version.range '*',
   },
-  { src = 'https://github.com/tpope/vim-fugitive' },
   {
     src = 'https://github.com/nvim-mini/mini.statusline',
     version = vim.version.range '*',
@@ -63,11 +62,25 @@ local function reset_selected_lines()
   gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
 end
 
+local function stage_selected_lines()
+  gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+end
+
 local function blame_line()
   gitsigns.blame_line { full = true }
 end
 
+-- Like `git diff HEAD`: staged changes too, which the default base (the index) hides
+local function diff_head()
+  gitsigns.diffthis 'HEAD'
+end
+
+-- The defaults use the same mark for added and changed lines, told apart by color alone
+local signs = { add = { text = '+' } }
+
 gitsigns.setup {
+  signs = signs,
+  signs_staged = signs,
   on_attach = function(bufnr)
     vim.keymap.set('n', ']c', next_hunk, { buffer = bufnr, desc = 'Next git hunk' })
     vim.keymap.set('n', '[c', previous_hunk, { buffer = bufnr, desc = 'Previous git hunk' })
@@ -76,11 +89,11 @@ gitsigns.setup {
     vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { buffer = bufnr, desc = 'Reset hunk' })
     vim.keymap.set('v', '<leader>hr', reset_selected_lines, { buffer = bufnr, desc = 'Reset selected lines' })
     vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, { buffer = bufnr, desc = 'Stage hunk' })
+    vim.keymap.set('v', '<leader>hs', stage_selected_lines, { buffer = bufnr, desc = 'Stage selected lines' })
     vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer, { buffer = bufnr, desc = 'Stage file' })
     vim.keymap.set('n', '<leader>hU', gitsigns.reset_buffer_index, { buffer = bufnr, desc = 'Unstage file' })
     vim.keymap.set('n', '<leader>hb', blame_line, { buffer = bufnr, desc = 'Blame line' })
-    vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { buffer = bufnr, desc = 'Diff against index' })
-    vim.keymap.set('n', '<leader>hc', '<Cmd>Git commit -v<CR>', { buffer = bufnr, desc = 'Commit' })
+    vim.keymap.set('n', '<leader>hd', diff_head, { buffer = bufnr, desc = 'Diff against HEAD' })
   end,
 }
 

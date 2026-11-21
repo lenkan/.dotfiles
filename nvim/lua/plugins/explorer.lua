@@ -4,8 +4,6 @@ vim.pack.add {
     src = 'https://github.com/nvim-tree/nvim-tree.lua',
     version = vim.version.range '*',
   },
-  -- Used by the tree's git keys. Also added in editor.lua; adding again does nothing, so keep the specs the same.
-  { src = 'https://github.com/tpope/vim-fugitive' },
 }
 
 -- Per nvim-tree's docs; `nvim .` then opens the tree
@@ -21,39 +19,29 @@ end
 vim.keymap.set('n', '\\', '<Cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file tree (reveal current file)' })
 vim.keymap.set('n', '<leader>fe', reveal_in_tree, { desc = 'Reveal file in tree' })
 
-local function node_path()
+local function git_on_node(args)
   local node = api.tree.get_node_under_cursor()
-  if node then
-    vim.fn.FugitiveDetect(node.absolute_path)
-    return node.absolute_path
+  if not node then
+    return
   end
-end
-
-local function git_on_node(command)
-  local path = node_path()
-  if path then
-    vim.cmd(command .. ' -- ' .. vim.fn.fnameescape(path))
+  local path = node.absolute_path
+  -- A directory runs git in itself: its parent may be outside the repo
+  local cwd = node.type == 'directory' and path or vim.fs.dirname(path)
+  local cmd = vim.list_extend(vim.list_extend({ 'git' }, args), { '--', path })
+  local result = vim.system(cmd, { cwd = cwd, text = true }):wait()
+  if result.code ~= 0 then
+    return vim.notify(vim.trim(result.stderr), vim.log.levels.ERROR)
   end
+  -- nvim-tree's own refresh after a git change misses a tree rooted below the repo's top folder
+  api.tree.reload()
 end
 
 local function git_add()
-  git_on_node 'Git add'
+  git_on_node { 'add' }
 end
 
 local function git_restore()
-  git_on_node 'Git restore --staged'
-end
-
-local function git_diff()
-  -- Opens the file the way Enter does, then replaces it with its diff. Space x brings the file back.
-  api.node.open.edit()
-  vim.cmd 'Git ++curwin diff HEAD -- %'
-end
-
-local function git_commit()
-  -- From the editor window, so the message opens as a split there. :wq commits and closes it.
-  vim.cmd 'wincmd p'
-  vim.cmd 'Git commit -v'
+  git_on_node { 'restore', '--staged' }
 end
 
 local function centered_float()
@@ -69,15 +57,6 @@ local function centered_float()
   }
 end
 
-vim.api.nvim_create_autocmd('User', {
-  desc = 'Refresh the tree after staging, unstaging or committing',
-  group = vim.api.nvim_create_augroup('user-tree-git', { clear = true }),
-  pattern = 'FugitiveChanged',
-  callback = function()
-    api.tree.reload()
-  end,
-})
-
 require('nvim-tree').setup {
   -- Dotfiles are shown and gitignored files hidden by default
   filters = { custom = { '^.git$' } },
@@ -89,8 +68,6 @@ require('nvim-tree').setup {
 
     vim.keymap.set('n', 'ga', git_add, { buffer = bufnr, desc = 'nvim-tree: Git Stage' })
     vim.keymap.set('n', 'gu', git_restore, { buffer = bufnr, desc = 'nvim-tree: Git Unstage' })
-    vim.keymap.set('n', 'gd', git_diff, { buffer = bufnr, desc = 'nvim-tree: Git Diff' })
-    vim.keymap.set('n', 'gc', git_commit, { buffer = bufnr, nowait = true, desc = 'nvim-tree: Git Commit' })
   end,
 }
 
