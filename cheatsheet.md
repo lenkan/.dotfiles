@@ -62,3 +62,17 @@ lsp lua           both words, in that order with anything between
 :Pick keymaps                      find a mapping you forgot
 :Pick git_files scope='modified'   changed files only
 :Pick git_hunks                    every change, with its diff
+
+## fzf in bash
+
+Ctrl+R            search history
+Ctrl+T            insert a file path
+Alt+C             cd into a subdirectory
+vim **<Tab>       fuzzy-complete files (cd dirs, kill processes, ssh hosts)
+cmd | fzf --preview 'git show --color {1}'   preview any list (here: git log --oneline)
+
+lsp lua           both words, any order
+'text             exact, not fuzzy
+^text  text$      at the start / at the end (.lua$)
+!text             exclude
+a | b             either
