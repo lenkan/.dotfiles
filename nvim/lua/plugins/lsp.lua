@@ -19,6 +19,7 @@ vim.pack.add {
     src = 'https://github.com/saghen/blink.cmp',
     version = vim.version.range '1.*',
   },
+  { src = 'https://github.com/ibhagwan/fzf-lua' },
 }
 
 vim.diagnostic.config {
@@ -55,12 +56,10 @@ local function toggle_virtual_lines()
   vim.diagnostic.config { virtual_lines = on and { current_line = true }, virtual_text = not on }
 end
 
-local function references()
-  vim.cmd 'Pick lsp scope="references"'
-end
+local fzf = require 'fzf-lua'
 
-vim.keymap.set('n', '<leader>pl', '<Cmd>Pick diagnostic scope="current"<CR>', { desc = 'List problems in file' })
-vim.keymap.set('n', '<leader>pL', '<Cmd>Pick diagnostic scope="all"<CR>', { desc = 'List all problems' })
+vim.keymap.set('n', '<leader>pl', fzf.diagnostics_document, { desc = 'List problems in file' })
+vim.keymap.set('n', '<leader>pL', fzf.diagnostics_workspace, { desc = 'List all problems' })
 vim.keymap.set('n', '<leader>py', copy_problem_message, { desc = 'Copy problem message' })
 vim.keymap.set('n', '<leader>pv', toggle_virtual_lines, { desc = 'Toggle virtual lines' })
 
@@ -74,14 +73,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
       return
     end
 
-    -- Only for servers that support them: Copilot attaches to every buffer, the file tree too, and would
-    -- replace its keys
     if client:supports_method('textDocument/definition', event.buf) then
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = event.buf, desc = 'LSP: Go to definition' })
+      vim.keymap.set('n', 'gd', fzf.lsp_definitions, { buffer = event.buf, desc = 'LSP: Go to definition' })
     end
 
     if client:supports_method('textDocument/references', event.buf) then
-      vim.keymap.set('n', 'grr', references, { buffer = event.buf, desc = 'LSP: References' })
+      vim.keymap.set('n', 'grr', fzf.lsp_references, { buffer = event.buf, desc = 'LSP: References' })
     end
 
     if client:supports_method('textDocument/documentHighlight', event.buf) then

@@ -4,13 +4,8 @@ vim.pack.add {
     src = 'https://github.com/nvim-tree/nvim-tree.lua',
     version = vim.version.range '*',
   },
-  -- Used by the tree's git keys. Also added in editor.lua and picker.lua; adding again does nothing, so keep the
-  -- specs the same.
+  -- Used by the tree's git keys. Also added in editor.lua; adding again does nothing, so keep the specs the same.
   { src = 'https://github.com/tpope/vim-fugitive' },
-  {
-    src = 'https://github.com/nvim-mini/mini.extra',
-    version = vim.version.range '*',
-  },
 }
 
 -- Per nvim-tree's docs; `nvim .` then opens the tree
@@ -61,13 +56,6 @@ local function git_commit()
   vim.cmd 'Git commit -v'
 end
 
-local function git_log()
-  local path = node_path()
-  if path then
-    require('mini.extra').pickers.git_commits { path = path }
-  end
-end
-
 local function centered_float()
   local width = math.floor(vim.o.columns * 0.5)
   local height = math.floor(vim.o.lines * 0.8)
@@ -102,7 +90,6 @@ require('nvim-tree').setup {
     vim.keymap.set('n', 'ga', git_add, { buffer = bufnr, desc = 'nvim-tree: Git Stage' })
     vim.keymap.set('n', 'gu', git_restore, { buffer = bufnr, desc = 'nvim-tree: Git Unstage' })
     vim.keymap.set('n', 'gd', git_diff, { buffer = bufnr, desc = 'nvim-tree: Git Diff' })
-    vim.keymap.set('n', 'gl', git_log, { buffer = bufnr, desc = 'nvim-tree: Git Log' })
     vim.keymap.set('n', 'gc', git_commit, { buffer = bufnr, nowait = true, desc = 'nvim-tree: Git Commit' })
   end,
 }

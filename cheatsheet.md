@@ -45,23 +45,17 @@ Same regex as rg in both:
 
 ## Neovim picker (Space ff files, Space fg grep)
 
-Tab               show / hide preview
-Ctrl+F Ctrl+B     scroll preview forward / back a page
+F1                list this picker's keys
+Ctrl+O            hide / show the preview
+Ctrl+F Ctrl+B     scroll preview forward / back half a page
 Ctrl+N Ctrl+P     next / previous result
-Ctrl+V Ctrl+S     open in vertical / horizontal split
-Ctrl+X Ctrl+A     mark one / all, then Alt+Enter sends them to quickfix (]q [q, :cdo s/a/b/)
-Ctrl+O            grep only: limit to a glob (*.ts, !*.test.ts)
-Ctrl+E            grep only: switch fixed text / regex / case-sensitive
+Ctrl+V Ctrl+S     open in vertical / horizontal split (Ctrl+T tab)
+Tab  Alt+A        mark one / all, Enter sends them to quickfix (]q [q, :cdo s/a/b/ | update)
+Alt+H  Alt+I      files only: show hidden / gitignored
+text -- *.ts      grep only: limit to a glob (!*.test.ts excludes)
+Ctrl+G            grep only: switch to fuzzy filtering the results
 
-lsp lua           both words, in that order with anything between
-'text             exact, no gaps
-^text  text$      at the start / at the end (.lua$)
-
-:Pick resume                       reopen the last picker as you left it
-:Pick oldfiles                     recent files
-:Pick keymaps                      find a mapping you forgot
-:Pick git_files scope='modified'   changed files only
-:Pick git_hunks                    every change, with its diff
+Query syntax is the same as fzf in bash, below.
 
 ## fzf in bash
 

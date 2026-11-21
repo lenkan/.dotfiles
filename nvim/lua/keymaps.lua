@@ -1,7 +1,3 @@
-local function show_all_keymaps()
-  require('which-key').show()
-end
-
 -- Maximizes the current window; again restores the previous sizes
 local function toggle_zoom()
   if vim.t.zoom_restore then
@@ -26,7 +22,6 @@ vim.keymap.set({ 'n', 'x', 'o' }, 'ö', '[', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'ä', ']', { remap = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ö', '{')
 vim.keymap.set({ 'n', 'x', 'o' }, 'Ä', '}')
-vim.keymap.set('n', '<leader>?', show_all_keymaps, { desc = 'All keymaps' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Like :only, but for buffers. Unsaved buffers and terminals are left alone.
