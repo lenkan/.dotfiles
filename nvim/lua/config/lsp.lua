@@ -21,23 +21,26 @@ function M.setup()
     },
   })
 
-  mason_lspconfig.setup {
-    ensure_installed = {
-      'bashls',
-      'ts_ls',
-      'biome',
-      'jsonls',
-      'cssls',
-      'html',
-      'basedpyright',
-      'ruff',
-      'rust_analyzer',
-      'gopls',
-      'stylua',
-      'lua_ls',
-      'copilot',
-    },
+  local servers = {
+    'bashls',
+    'ts_ls',
+    'biome',
+    'jsonls',
+    'cssls',
+    'html',
+    'basedpyright',
+    'ruff',
+    'rust_analyzer',
+    'stylua',
+    'lua_ls',
+    'copilot',
   }
+  -- Mason builds gopls with `go install`, so it fails on a machine without Go
+  if vim.fn.executable 'go' == 1 then
+    table.insert(servers, 'gopls')
+  end
+
+  mason_lspconfig.setup { ensure_installed = servers }
 
   vim.lsp.inline_completion.enable()
 end
