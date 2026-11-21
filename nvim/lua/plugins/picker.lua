@@ -6,7 +6,6 @@ vim.pack.add {
 local fzf = require 'fzf-lua'
 
 fzf.setup {
-  winopts = { border = 'rounded', preview = { border = 'rounded' } },
   -- fzf's default smart case turns case-sensitive on any capital, so "Rename" misses "rename()"
   fzf_opts = { ['--ignore-case'] = true },
   keymap = {
@@ -23,13 +22,10 @@ fzf.setup {
       ['ctrl-o'] = 'toggle-preview',
     },
   },
-  -- One key toggles staging, in place of Left / Right (which then move the cursor in the query again). No discard.
+  -- One key toggles staging. The default Left / Right still work.
   git = {
     status = {
       actions = {
-        ['left'] = false,
-        ['right'] = false,
-        ['ctrl-x'] = false,
         ['ctrl-s'] = { fn = require('fzf-lua.actions').git_stage_unstage, reload = true },
       },
     },
